@@ -1,0 +1,8 @@
+Post Demo:: 
+----------------------
+	
+============================================================================
+
+0. Make execution of blocks be stepwise like turtle!!
+1. rebuild server using jars, and upload
+2. implement other suggestions by said

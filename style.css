@@ -1,0 +1,48 @@
+html,body{
+	font-family: sans-serif
+}
+button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: large;
+  background-color: #eee;
+  color: #000;
+  cursor: pointer;
+}
+button.primary {
+  /* Can't use "text-align: start" due to IE. */
+  text-align: left;
+  border: 1px solid #dd4b39;
+  background-color: #dd4b39;
+  color: #fff;
+}
+.icon21 {
+  height: 21px;
+  width: 21px;
+  background-image: url(content/icons.png);
+}
+.run {
+  background-position: -63px -21px;
+}
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+   border: 1px solid black;
+}
+th{
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: #dddddd;
+	padding: 3px;
+}
+td{	
+	padding: 10px;
+	vertical-align: top;
+}
+li{
+	margin-bottom: 1px;
+}
