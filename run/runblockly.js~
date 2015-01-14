@@ -12,10 +12,10 @@ window.onload = function(){
 	window.connection = new SpheroConnection(url);
 	sphero = new Sphero();
 	
-	$("#languageMenu").parent().css("position", "absolute").css("right", "10px").css("top", "20px");
 	BlocklyApps.LANG = 'en';
-	BlocklyApps.LANGUAGES = ["en"];
+	BlocklyApps.LANGU
 	BlocklyApps.init();
+	var rtl = BlocklyApps.isRtl();
 	
 	Blockly.JavaScript.addReservedWords("sphero");
 	Blockly.JavaScript.addReservedWords('SpheroManager');
@@ -52,6 +52,13 @@ window.onload = function(){
 		document.getElementsByTagName("html")[0].style.cursor = "";
 		document.getElementsByTagName("body")[0].style.cursor = "";
 		window.removeEventListener('mousemove', Utils.divMove, true);
+	});
+	
+	Blockly.inject(document.getElementById('blocklyDiv'), {
+		path: 'blockly/', 
+		toolbox: document.getElementById('toolbox'),
+		rtl: rtl,
+		trashcan: true
 	});
 }
 

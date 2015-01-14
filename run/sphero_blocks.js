@@ -76,7 +76,7 @@ Blockly.Blocks['sphero_set_rgb'] = {
 
 Blockly.JavaScript['sphero_set_rgb'] = function(block) {
 	var hex = Blockly.JavaScript.valueToCode(block, 'COLOUR', Blockly.JavaScript.ORDER_NONE) || '#ffffff';
-	var code = "sphero.setRGB(" + hex + ");\n";
+	var code = "sphero.setRGB(" + hex + ", "+ block.id +");\n";
 	return code;
 }
 
@@ -96,7 +96,7 @@ Blockly.Blocks['sphero_roll'] = {
 
 Blockly.JavaScript['sphero_roll'] = function(block){
 	var heading = Blockly.JavaScript.valueToCode(block, 'HEADING', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.roll("+heading+");\n";
+	var code = "sphero.roll("+heading+", "+ block.id +");\n";
 	return code;
 }
 
@@ -112,7 +112,7 @@ Blockly.Blocks['sphero_rollForward'] = {
 }
 
 Blockly.JavaScript['sphero_rollForward'] = function(block) {
-	var code = "sphero.rollForward();\n";
+	var code = "sphero.rollForward("+ block.id +");\n";
 	return code;
 }
 
@@ -132,7 +132,7 @@ Blockly.Blocks['sphero_turn'] = {
 
 Blockly.JavaScript['sphero_turn'] = function(block) {
 	var direction = Blockly.JavaScript.valueToCode(block, 'DIRECTION', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.turn("+direction+");\n";
+	var code = "sphero.turn("+direction+", "+ block.id +");\n";
 	return code;
 }
 
@@ -151,7 +151,7 @@ Blockly.Blocks['sphero_set_stabilization'] = {
 
 Blockly.JavaScript['sphero_set_stabilization'] = function(block) {
 	var flag = Blockly.JavaScript.valueToCode(block, 'FLAG', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.setStabilization("+flag+");\n";
+	var code = "sphero.setStabilization("+flag+", "+ block.id +");\n";
 	return code;
 }
 
@@ -171,7 +171,7 @@ Blockly.Blocks['sphero_set_speed'] = {
 
 Blockly.JavaScript['sphero_set_speed'] = function(block) {
 	var speed = Blockly.JavaScript.valueToCode(block, 'SPEED', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.setSpeed("+speed+");\n";
+	var code = "sphero.setSpeed("+speed+", "+ block.id +");\n";
 	return code;
 }
 
@@ -187,7 +187,7 @@ Blockly.Blocks['sphero_stop'] = {
 }
 
 Blockly.JavaScript['sphero_stop'] = function(block) {
-	var code = "sphero.stop();\n";
+	var code = "sphero.stop("+ block.id +");\n";
 	return code;
 }
 
@@ -210,7 +210,7 @@ Blockly.Blocks['sphero_wait'] = {
 
 Blockly.JavaScript['sphero_wait'] = function(block) {
 	var seconds = Blockly.JavaScript.valueToCode(block, 'TIME', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.wait(" + seconds+");\n";
+	var code = "sphero.wait(" + seconds+", "+ block.id +");\n";
 	/*var code = "var e = new Date().getTime() + ("+seconds+" * 1000);\n while (new Date().getTime() <= e) {}\n";*/
 	return code;
 }

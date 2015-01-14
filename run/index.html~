@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="blockly/blocks_compressed.js"></script>
 		<script type="text/javascript" src="blockly/apps/common.js"></script>
 		<script type="text/javascript" src="sphero_blocks.js"></script>
-		<script type="text/javascript" src="msg/js/en.js"></script>
+		<script type="text/javascript" src="blockly/msg/js/en.js"></script>
 		<script type="text/javascript" src="runblockly.js"></script>
 		
 		<link rel="icon" type="image/ico" href="favicon.ico">
@@ -19,7 +19,7 @@
 	<body>	
 		<div align="left" style="height: 86px">	
 			<button type="button" onclick="SpheroManager.exportXml()" id="exportButton">Export Blocks</button>
-			<span id="title">Spherly: Program Your Sphero</span>
+			<span id="spherly_title">Spherly: Program Your Sphero</span>
 			<br/>
 			<button type="button" class="primary" onclick="tryTo(SpheroManager.run)" id="runButton" disabled=true>Run</button>
 			<button type="button" class="primary" onclick="tryTo(SpheroManager.stop)" id="stopButton" disabled=true>Stop</button>
@@ -30,8 +30,7 @@
 			<button type="button" onclick="tryTo(SpheroManager.sleep);" id="sleepButton" disabled=true>Sleep</button>	
 		</div>
 		<div align="right">
-			<select id="languageMenu">
-			</select>
+			<select id="l
 		</div>
 		<!--<div align="center">
 			Heading: 

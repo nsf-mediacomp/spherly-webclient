@@ -47,7 +47,6 @@ function SpheroConnection(url) {
 function Sphero(url) {
 	self = this;
 	this.speed = 255;
-	this.command_queue = [];
 	this.power_timeout_id = null;
 	this.got_power_notification = false;
 	this.power_timeout = 60000;
@@ -55,6 +54,7 @@ function Sphero(url) {
 	this.then = Date.now();
 	this.COMMAND_WAIT_TIME = 50;
 	this.wait_time = this.COMMAND_WAIT_TIME;
+	this.command_queue = [];
 	
 	this.power_notifications = [null, false, false, false, false];
 	this.stopPowerNotifications = function(){
@@ -139,38 +139,40 @@ function Sphero(url) {
 		window.connection.destroyMessageCallback();
 	}
 	
+	//
 	//USER COMMANDS
-	this.setRGB = function(hex) {
-		this.command_queue.push(["setRGB", hex]);
+	//
+	this.setRGB = function(hex, blockID) {
+		this.command_queue.push(["setRGB", hex, blockID]);
 	}
-	this.turn = function(direction){
+	this.turn = function(direction, blockID){
 		direction = Math.round(direction);
-		this.command_queue.push(["turn", direction]);
+		this.command_queue.push(["turn", direction, blockID]);
 	}
-	this.setStabilization = function(flag){
-		this.command_queue.push(["setStabilization", flag]);
+	this.setStabilization = function(flag, blockID){
+		this.command_queue.push(["setStabilization", flag, blockID]);
 	}
-	this.setSpeed = function(speed){
+	this.setSpeed = function(speed, blockID){
 		speed = Math.round(speed);
-		this.command_queue.push(["setSpeed", speed]);
+		this.command_queue.push(["setSpeed", speed, blockID]);
 	}
-	this.roll = function(heading){
-		this.command_queue.push(["roll", heading]);
+	this.roll = function(heading, blockID){
+		this.command_queue.push(["roll", heading, blockID]);
 	}
-	this.rollForward = function() {
-		this.command_queue.push(["rollForward"]);
+	this.rollForward = function(blockID) {
+		this.command_queue.push(["rollForward", blockID]);
 	}
-	this.stop = function() {
-		this.command_queue.push(["stop"]);
+	this.stop = function(blockID) {
+		this.command_queue.push(["stop"], blockID);
 	}
-	this.setHeading = function (heading) {		
-		this.command_queue.push(["setHeading", heading]);
+	this.setHeading = function (heading, blockID) {		
+		this.command_queue.push(["setHeading", heading, blockID]);
 	}
-	this.setBackLED = function (value) {
-		this.command_queue.push(["setBackLED", value]);
+	this.setBackLED = function (value, blockID) {
+		this.command_queue.push(["setBackLED", value, blockID]);
 	}
-	this.wait = function (seconds) {
-		this.command_queue.push(["wait", seconds]);
+	this.wait = function (seconds, blockID) {
+		this.command_queue.push(["wait", seconds, blockID]);
 	}
 	
 	this.spheroMessageCallback = function(data){
@@ -273,6 +275,9 @@ function Sphero(url) {
 	
 		var command = this.command_queue.shift();
 		if (command !== undefined){
+			Blockly.mainWorkspace.highlightBlock(command[command.length-1]);
+			command = command.slice(0, command.length-1);
+			
 			switch(command[0]){
 				case "setRGB":
 					var hex = command[1];
