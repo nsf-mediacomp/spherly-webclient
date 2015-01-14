@@ -305,14 +305,16 @@ SpheroManager.run = function() {
 	//console.log(jscode);
 	
 	Blockly.mainWorkspace.traceOn(true);
-	
+	//Add this to prevent infinite loop crashing :D!!!
+	window.loopTrap = 1000;
+	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.loopTrap <= 0) throw "Infinity";\n';
 	
 	sphero.clearAllCommands();
 	try {
 		eval(jscode);
 	}
 	catch (e) {
-		if (e !== Infinity){
+		if (e !== "Infinity"){
 			var e = $(document.createTextNode(e));
 			SpheroManager.alertMessage("Error", e, button);
 		}
