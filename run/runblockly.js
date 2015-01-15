@@ -11,8 +11,7 @@ function SpheroManager(){};
 window.onload = function(){
 	window.connection = new SpheroConnection(url);
 	sphero = new Sphero();
-	
-	$("#languageMenu").parent().css("position", "absolute").css("right", "10px").css("top", "20px");
+
 	BlocklyApps.LANG = 'en';
 	BlocklyApps.LANGUAGES = ["en"];
 	BlocklyApps.init();
@@ -55,25 +54,79 @@ window.onload = function(){
 	});
 }
 
-SpheroManager.exportXml = function(){
+SpheroManager.openProject = function(){
+	var message = $(document.createElement("div"));
+	message.append(document.createTextNode("Select XML File containing your project"));
+		message.append(document.createElement("br"));
+	message.css("margin-top", "-8px");
+	var fileinput = $(document.createElement("input"));
+
+	fileinput.attr('type', "file");
+	fileinput.attr('accept', "text/plain, text/xml");
+	fileinput.on('change', function(e){
+		console.log(fileinput);
+		var file = fileinput[0].files[0];
+		var reader = new FileReader();
+		reader.onload = function(e){
+			textarea.html(reader.result);
+		}
+		reader.readAsText(file);
+	});
+	message.append(fileinput);
+		message.append(document.createElement("br"));
+	var textarea = $(document.createElement('textarea'));
+	textarea.attr('id', 'dialog_block_xml');
+	textarea.css("width", "98%").css("height", "54%").css("margin-top", "5px");
+	
+	message.append(textarea);
+	
+	
+	var button = $(document.createElement('div'));
+	button.html("Load Project");
+	button.attr('id', 'dialogButton');
+	button.click(SpheroManager.LoadProjectButton);
+	button.width(150);
+	
+	SpheroManager.alertMessage("Open Project", message, button);
+}
+SpheroManager.LoadProjectButton = function(e){
+	var xml = $("#dialog_block_xml").text();
+	Blockly.mainWorkspace.clear();
+	SpheroManager.loadBlocks(xml);
+	Utils.closeDialog();
+}
+
+SpheroManager.saveProject = function(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	xml = Blockly.Xml.domToPrettyText(xml);
 	
-	var message = $(document.createElement('textarea'));
-	message.attr('id', 'dialog_block_xml');
-	message.css("width", "98%").css("height", "70%").css("margin-top", "5px");
-	message.html(xml);
+	var message = $(document.createElement("div"));
+	message.append(document.createTextNode("Filename: "));
+	var filename = $(document.createElement("input"));
+	filename.attr("type", "text");
+	filename.attr("id", "filename_filename");
+	filename.val("SpheroProject.xml");
+	message.append(filename);
+		message.append(document.createElement("br"));
+	var textarea = $(document.createElement('textarea'));
+	textarea.attr('id', 'dialog_block_xml');
+	textarea.css("width", "98%").css("height", "56%").css("margin-top", "5px");
+	textarea.html(xml);
+	message.append(textarea);
 	
 	var button = $(document.createElement('div'));
-	button.attr('id', "dialogButton");
-	button.click(function(e){
-		SpheroManager.importXml(message);
-	});
-	button.html("Import XML");
-	button.width(140);
-
-	SpheroManager.alertMessage("Block XML", message, button);
-};
+	button.html("Save Project");
+	button.attr('id', 'dialogButton');
+	button.click(SpheroManager.SaveProjectButton);
+	button.width(150);
+	
+	SpheroManager.alertMessage("Save Project / Download Blocks", message, button);
+}
+SpheroManager.SaveProjectButton = function(e){
+	Utils.createDownloadLink("#export", $("#dialog_block_xml").text(), $("#filename_filename").val());
+	$("#export")[0].click();
+	Utils.closeDialog();
+}
 
 SpheroManager.alertMessage = function(title, message, button){
 	$("#titleText").html(title);
@@ -82,6 +135,8 @@ SpheroManager.alertMessage = function(title, message, button){
 	$("#dialogBody").append(document.createElement('br'));
 	$("#dialogBody").append(button);
 	$("#dialog").css("display", "block");
+	$("#dialog").width(500);
+	$("#dialog").height(300);
 	
 	//TODO (not good with two button?)
 	window.onkeydown = function(e){
@@ -223,12 +278,6 @@ SpheroManager.setHeading = function(val) {
 	console.log("set heading: " + val);
 }
 
-SpheroManager.importXml = function(textarea){
-	Blockly.mainWorkspace.clear();
-	SpheroManager.loadBlocks($(textarea).val());
-	$("#dialog").css("display", "none");
-}
-
 SpheroManager.loadBlocks = function(defaultXml){
   try {
     var loadOnce = window.sessionStorage.loadOnceBlocks;
@@ -331,7 +380,6 @@ SpheroManager.stop = function(){
 function Utils(){};
 
 Utils.divMove = function(e){
-	console.log("!");
 	var div = $("#dialog");
 	div.css("position", "absolute");
 	div.css("top", (e.clientY-offY) + 'px');
@@ -387,4 +435,19 @@ Utils.HSVtoRGB = function(h, s, v) {
         g: Math.floor(g * 255),
         b: Math.floor(b * 255)
     };
+}
+
+//http://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
+Utils.createDownloadLink = function(anchorSelector, str, fileName){
+	if(window.navigator.msSaveOrOpenBlob) {
+		var fileData = [str];
+		blobObject = new Blob(fileData);
+		$(anchorSelector).click(function(){
+			window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+		});
+	} else {
+		var url = "data:text/plain;charset=utf-8," + encodeURIComponent(str);
+		$(anchorSelector).attr("download", fileName);               
+		$(anchorSelector).attr("href", url);
+	}
 }

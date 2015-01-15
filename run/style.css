@@ -18,10 +18,15 @@ th,td{
 	font-weight: bold;
 }
 #blocklyDiv{
-	width: 99.5%;s
-	height: -moz-calc(100% - 90px);
-	height: -webkit-calc(100% - 90px);
-	height: calc(100% - 90px);
+	width: 99.5%;
+	height: -moz-calc(100% - 120px);
+	height: -webkit-calc(100% - 120px);
+	height: calc(100% - 120px);
+}
+#languageMenuContainer{
+	position: absolute;
+	right: 10px;
+	top: 20px;
 }
 
 /*DIalog*/
@@ -29,8 +34,6 @@ th,td{
 	position:absolute;
 	top: 25%;
     left: 25%;
-    width: 500px;
-    height: 300px;
     /*margin-left: -250px;
     margin-top: -150px;*/
 	

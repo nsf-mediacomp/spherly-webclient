@@ -17,12 +17,28 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>	
-		<div align="left" style="height: 86px">	
-			<button type="button" onclick="SpheroManager.exportXml()" id="exportButton">Export Blocks</button>
+		<div align="left" style="height: 116px">	
+			<!--<button type="button" onclick="SpheroManager.exportXml()" id="exportButton">Export Blocks</button>-->
+			&nbsp;
 			<span id="title">Spherly: Program Your Sphero</span>
 			<br/>
-			<button type="button" class="primary" onclick="tryTo(SpheroManager.run)" id="runButton" disabled=true>Run</button>
-			<button type="button" class="primary" onclick="tryTo(SpheroManager.stop)" id="stopButton" disabled=true>Stop</button>
+			<button type="button" id="openProjectButton" onclick="SpheroManager.openProject();">
+				Open Project
+			</button>
+			<button type="button" id="saveProjectButton" onclick="SpheroManager.saveProject();">
+				Save Project
+			</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;
+			<button type="button" class="primary" onclick="tryTo(SpheroManager.run)" id="runButton" disabled=true>
+				Run Program
+			</button>
+			<button type="button" class="primary" onclick="tryTo(SpheroManager.stop)" id="stopButton" disabled=true>
+				Stop Program
+			</button>
+			<br/>
 			<button onclick="tryTo(SpheroManager.selectSphero)" id="selectButton">Select Address</button>
 			<input type="text" id="spheroAddress" value="00:06:66:4B:9F:D7">
 			<button type="button" onclick="tryTo(SpheroManager.connect);" id="connectButton">Connect</button>
@@ -30,8 +46,11 @@
 			<button type="button" onclick="tryTo(SpheroManager.sleep);" id="sleepButton" disabled=true>Sleep</button>	
 		</div>
 		<div align="right">
-			<select id="languageMenu">
-			</select>
+			<div id="languageMenuContainer">
+				Language:
+				<select id="languageMenu">
+				</select>
+			</div>
 		</div>
 		<!--<div align="center">
 			Heading: 
@@ -317,7 +336,7 @@
     <category name="Functions" custom="PROCEDURE"></category>
 </xml>
 
-
+	<a id="export" download="" href="#" style="display:none;"></a>
 
 		<script type="text/javascript">
 			Blockly.inject(document.getElementById('blocklyDiv'), {path: 'blockly/', toolbox: document.getElementById('toolbox')});
