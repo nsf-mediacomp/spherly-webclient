@@ -75,11 +75,15 @@ th,td{
 
 /* Buttons */
 button {
-  margin: 5px;
-  padding: 5px;
+  margin: 2px;
+  margin-right: -2px;
+  padding: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: 4px;
   border: 1px solid #ddd;
-  font-size: medium;
+  font-size: 16px;
+  line-height: 20px;
   background-color: #eee;
   color: #000;
 }

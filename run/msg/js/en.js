@@ -11,9 +11,15 @@ Blockly.Msg.SPHERO_GOSPHERO_URL = "http://www.gosphero.com";
 Blockly.Msg.SPHERO_API_HELPURL = 'http://orbotixinc.github.io/Sphero-Docs/docs/sphero-api/bootloader-and-sphero.html';
 Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_setinterval.asp';
 
-Blockly.Msg.SPHERO_RUN_TITLE = "When run button pressed";
+Blockly.Msg.SPHERO_RUN_TITLE = "When Run Button clicked";
 Blockly.Msg.SPHERO_RUN_TOOLTIP = "The block that contains what code to execute when the run button is pressed.";
-Blockly.Msg.SPHERO_COLLISION_TITLE = "When sphero detects collision";
+Blockly.Msg.SPHERO_EVENT_COLLISION = "When Sphero runs into something";
+Blockly.Msg.SPHERO_EVENT_STOP = "When Stop Button clicked";
+Blockly.Msg.SPHERO_EVENT_END = "When Sphero program finishes";
+Blockly.Msg.SPHERO_EVENT_TOOLTIP = "Blocks here will be run when the specified event occurs.";
+
+Blockly.Msg.SPHERO_COLLISION_HELPURL = "http://orbotixinc.github.io/Sphero-Docs/docs/collision-detection/index.html";
+Blockly.Msg.SPHERO_COLLISION_TITLE = "When Sphero runs into something";
 Blockly.Msg.SPHERO_COLLISION_TOOLTIP = "The block that contains what code to execute when the sphero collides with something.";
 Blockly.Msg.SPHERO_SETRGB_TITLE = "change sphero colour to";
 Blockly.Msg.SPHERO_SETRGB_TOOLTIP = "Change Sphero's LED to the specified color.";

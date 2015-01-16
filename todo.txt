@@ -2,18 +2,32 @@ INTERESTING:: SHOULD SWITCH TO USING THIS AFTER OTHER CHANGES:
 https://developers.google.com/blockly/installation/js-interpreter
 
 HTML
-	0. Make New Project, Share Project, Save Project and Open Project
-	For example, some ideas about additional features:
-	- Local installation of the web application (avoid problems due to network latency or unavailabilities)
+	-RUN PROGRAM should change into RESET PROGRAM (when pressed)
 	- Support of more than one Sphero to illustrate the collaboration between robots
 	- Support calibration
-	- Optimize the feature used to save and to open existing projects
-	- Etc.
-	1. when run button make it like SNAP! or SCRATCH! run start block (not wrapper just at top)
+	0. Add More Examples! (and fix old examples to work with new blocks)
+	1. add a default wait between each command!!!
+		(like the slider for turtle)
 	3. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
 	2. getRidOfNakedCode is probably poorly created
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
+	0. Make New Project, Share Project
+	1. Revise the Manual
 	
 SERVER
 	0. server needs to disconnect from sphero when disconnected from web client
 		(consistently, sometimes does sometimes doesn't)
+	end listening...
+	java.lang.NullPointerException
+		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
+		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
+		at java.lang.Thread.run(Unknown Source)
+		
+	Stop Rolling
+	java.io.IOException: Stream closed
+		at com.intel.bluetooth.BluetoothRFCommInputStream.read(BluetoothRFCommInputStream.java:131)
+		at bluecoveRFCOMM.read(bluecoveRFCOMM.java:138)
+		at Sphero$1.readComm(Sphero.java:254)
+		at Sphero$1.listen(Sphero.java:262)
+		at Sphero$1.run(Sphero.java:321)
+		at java.lang.Thread.run(Unknown Source)

@@ -1,0 +1,61 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="sphero_run" id="358" x="98" y="83">
+    <statement name="DO">
+      <block type="sphero_set_rgb" id="401" inline="false">
+        <value name="COLOUR">
+          <block type="colour_picker" id="402">
+            <field name="COLOUR">#33cc00</field>
+          </block>
+        </value>
+        <next>
+          <block type="sphero_rollForward" id="374"></block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="sphero_collision" id="361" x="97" y="227">
+    <statement name="DO">
+      <block type="sphero_set_rgb" id="387" inline="false">
+        <value name="COLOUR">
+          <block type="colour_picker" id="388">
+            <field name="COLOUR">#ff0000</field>
+          </block>
+        </value>
+        <next>
+          <block type="sphero_stop" id="415">
+            <next>
+              <block type="sphero_wait" id="428" inline="true">
+                <value name="TIME">
+                  <block type="math_number" id="429">
+                    <field name="NUM">0.5</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="sphero_turn" id="442" inline="true">
+                    <value name="DIRECTION">
+                      <block type="math_number" id="443">
+                        <field name="NUM">180</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="sphero_wait" id="444" inline="true">
+                        <value name="TIME">
+                          <block type="math_number" id="445">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="sphero_rollForward" id="446"></block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

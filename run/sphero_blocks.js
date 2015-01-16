@@ -18,46 +18,44 @@ Blockly.Blocks['sphero_run'] = {
     this.setPreviousStatement(false);
     this.setNextStatement(false);
     this.setTooltip(Blockly.Msg.SPHERO_RUN_TOOLTIP);
-	this.setDeletable(false);
   }
 };
 
 Blockly.JavaScript['sphero_run'] = function(block) {
   // ONly run the code that is inside this block when run button is pressed (like a main)
   var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
-  var code = 'SpheroManager.spheroRun = function(){\n' + 
+  var code = 'SpheroManager.sphero.attachEventHandler("RUN", function(){\n' + 
       do_branch +
-	  '  \n}\n';
+	  '\n});\n';
   return code;
 };
 
-Blockly.Blocks['sphero_collision'] = {
-  /**
-   * Block to set the code that will run with the run button is pressed
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.setHelpUrl(Blockly.Msg.SPHERO_GOSPHERO_URL);
-    this.setColour(210);
-    this.appendDummyInput()
-        .appendField(Blockly.Msg.SPHERO_COLLISION_TITLE);
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
-    this.setPreviousStatement(false);
-    this.setNextStatement(false);
-    this.setTooltip(Blockly.Msg.SPHERO_COLLISION_TOOLTIP);
-	this.setDeletable(false);
-  }
+Blockly.Blocks['sphero_event'] = {
+	init: function(){
+		this.setHelpUrl(Blockly.Msg.SPHERO_API_HELPURL);
+		this.setColour(210);
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldDropdown([
+				[Blockly.Msg.SPHERO_EVENT_COLLISION, 'COLLISION'], 
+				[Blockly.Msg.SPHERO_EVENT_STOP, 'STOP']
+				//[Blockly.Msg.SPHERO_EVENT_END, 'END']
+			]), "EVENT");
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setTooltip(Blockly.Msg.SPHERO_EVENT_TOOLTIP);
+		this.setDeletable(true);
+	}
 };
 
-Blockly.JavaScript['sphero_collision'] = function(block) {
-  // ONly run the code that is inside this block when sphero detects collision
-  var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
-  var code = 'SpheroManager.spheroCollide = function(){' +
-	  'sphero.setCollisionDetection(true, function(){\n' + 
-      do_branch +
-	  '});}\n';
-  return code;
+Blockly.JavaScript['sphero_event'] = function(block){
+	var event = block.getFieldValue('EVENT');
+	var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
+	var code = 'SpheroManager.sphero.attachEventHandler("'+event+'", function(){' +
+					do_branch +
+				'\n});\n';
+	return code;
 };
 
 Blockly.Blocks['sphero_set_rgb'] = {
@@ -76,7 +74,7 @@ Blockly.Blocks['sphero_set_rgb'] = {
 
 Blockly.JavaScript['sphero_set_rgb'] = function(block) {
 	var hex = Blockly.JavaScript.valueToCode(block, 'COLOUR', Blockly.JavaScript.ORDER_NONE) || '#ffffff';
-	var code = "sphero.setRGB(" + hex + ", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.setRGB(" + hex + ", "+ block.id +");\n";
 	return code;
 }
 
@@ -96,7 +94,7 @@ Blockly.Blocks['sphero_roll'] = {
 
 Blockly.JavaScript['sphero_roll'] = function(block){
 	var heading = Blockly.JavaScript.valueToCode(block, 'HEADING', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.roll("+heading+", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.roll("+heading+", "+ block.id +");\n";
 	return code;
 }
 
@@ -112,7 +110,7 @@ Blockly.Blocks['sphero_rollForward'] = {
 }
 
 Blockly.JavaScript['sphero_rollForward'] = function(block) {
-	var code = "sphero.rollForward("+ block.id +");\n";
+	var code = "SpheroManager.sphero.rollForward("+ block.id +");\n";
 	return code;
 }
 
@@ -132,7 +130,7 @@ Blockly.Blocks['sphero_turn'] = {
 
 Blockly.JavaScript['sphero_turn'] = function(block) {
 	var direction = Blockly.JavaScript.valueToCode(block, 'DIRECTION', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.turn("+direction+", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.turn("+direction+", "+ block.id +");\n";
 	return code;
 }
 
@@ -151,7 +149,7 @@ Blockly.Blocks['sphero_set_stabilization'] = {
 
 Blockly.JavaScript['sphero_set_stabilization'] = function(block) {
 	var flag = Blockly.JavaScript.valueToCode(block, 'FLAG', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.setStabilization("+flag+", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.setStabilization("+flag+", "+ block.id +");\n";
 	return code;
 }
 
@@ -171,7 +169,7 @@ Blockly.Blocks['sphero_set_speed'] = {
 
 Blockly.JavaScript['sphero_set_speed'] = function(block) {
 	var speed = Blockly.JavaScript.valueToCode(block, 'SPEED', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.setSpeed("+speed+", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.setSpeed("+speed+", "+ block.id +");\n";
 	return code;
 }
 
@@ -187,7 +185,7 @@ Blockly.Blocks['sphero_stop'] = {
 }
 
 Blockly.JavaScript['sphero_stop'] = function(block) {
-	var code = "sphero.stop("+ block.id +");\n";
+	var code = "SpheroManager.sphero.stop("+ block.id +");\n";
 	return code;
 }
 
@@ -210,7 +208,7 @@ Blockly.Blocks['sphero_wait'] = {
 
 Blockly.JavaScript['sphero_wait'] = function(block) {
 	var seconds = Blockly.JavaScript.valueToCode(block, 'TIME', Blockly.JavaScript.ORDER_NONE);
-	var code = "sphero.wait(" + seconds+", "+ block.id +");\n";
+	var code = "SpheroManager.sphero.wait(" + seconds+", "+ block.id +");\n";
 	/*var code = "var e = new Date().getTime() + ("+seconds+" * 1000);\n while (new Date().getTime() <= e) {}\n";*/
 	return code;
 }

@@ -1,12 +1,12 @@
 <xml xmlns="http://www.w3.org/1999/xhtml">
-  <block type="sphero_run" id="1" x="44" y="40">
+  <block type="sphero_run" id="3" deletable="false" x="44" y="40">
     <statement name="DO">
-      <block type="procedures_callnoreturn" id="157" inline="false">
-        <mutation name="roll in a big square">
+      <block type="procedures_callnoreturn" id="4" inline="false">
+        <mutation name="roll in a square spiral">
           <arg name="time"></arg>
         </mutation>
         <value name="ARG0">
-          <block type="math_number" id="159">
+          <block type="math_number" id="5">
             <field name="NUM">0.2</field>
           </block>
         </value>
@@ -17,65 +17,65 @@
     <mutation>
       <arg name="time"></arg>
     </mutation>
-    <field name="NAME">roll in a big square</field>
+    <field name="NAME">roll in a square spiral</field>
     <statement name="STACK">
-      <block type="procedures_ifreturn" id="14" inline="true">
+      <block type="procedures_ifreturn" id="7" inline="true">
         <mutation value="0"></mutation>
         <value name="CONDITION">
-          <block type="logic_compare" id="22" inline="true">
+          <block type="logic_compare" id="8" inline="true">
             <field name="OP">GT</field>
             <value name="A">
-              <block type="variables_get" id="27">
+              <block type="variables_get" id="9">
                 <field name="VAR">time</field>
               </block>
             </value>
             <value name="B">
-              <block type="math_number" id="46">
+              <block type="math_number" id="10">
                 <field name="NUM">1</field>
               </block>
             </value>
           </block>
         </value>
         <next>
-          <block type="sphero_turn" id="59" inline="true">
+          <block type="sphero_turn" id="11" inline="true">
             <value name="DIRECTION">
-              <block type="math_number" id="60">
+              <block type="math_number" id="12">
                 <field name="NUM">90</field>
               </block>
             </value>
             <next>
-              <block type="sphero_rollForward" id="73">
+              <block type="sphero_rollForward" id="13">
                 <next>
-                  <block type="sphero_wait" id="86" inline="true">
+                  <block type="sphero_wait" id="14" inline="true">
                     <value name="TIME">
-                      <block type="variables_get" id="94">
+                      <block type="variables_get" id="15">
                         <field name="VAR">time</field>
                       </block>
                     </value>
                     <next>
-                      <block type="sphero_stop" id="107">
+                      <block type="sphero_stop" id="16">
                         <next>
-                          <block type="sphero_wait" id="88" inline="true">
+                          <block type="sphero_wait" id="17" inline="true">
                             <value name="TIME">
-                              <block type="math_number" id="89">
+                              <block type="math_number" id="18">
                                 <field name="NUM">0.5</field>
                               </block>
                             </value>
                             <next>
-                              <block type="procedures_callnoreturn" id="128" inline="false">
-                                <mutation name="roll in a big square">
+                              <block type="procedures_callnoreturn" id="19" inline="false">
+                                <mutation name="roll in a square spiral">
                                   <arg name="time"></arg>
                                 </mutation>
                                 <value name="ARG0">
-                                  <block type="math_arithmetic" id="147" inline="true">
+                                  <block type="math_arithmetic" id="20" inline="true">
                                     <field name="OP">ADD</field>
                                     <value name="A">
-                                      <block type="variables_get" id="158">
+                                      <block type="variables_get" id="21">
                                         <field name="VAR">time</field>
                                       </block>
                                     </value>
                                     <value name="B">
-                                      <block type="math_number" id="148">
+                                      <block type="math_number" id="22">
                                         <field name="NUM">0.1</field>
                                       </block>
                                     </value>
@@ -96,4 +96,5 @@
       </block>
     </statement>
   </block>
+  <block type="sphero_collision" id="23" deletable="false" x="191" y="294"></block>
 </xml>

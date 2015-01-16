@@ -56,13 +56,49 @@ function Sphero(url) {
 	this.wait_time = this.COMMAND_WAIT_TIME;
 	this.command_queue = [];
 	
+	this.stopHandler = null;
+	this.clearEventHandlers = function(){
+		this.runHandler = null;
+		if (this.collisionHandler !== null)
+			this.disableCollisionDetection();
+		this.endHandler = null;
+	}
+	this.collisionHandler = null;
+	this.clearEventHandlers();
+	this.attachEventHandler = function(event, handler){
+		switch(event){
+			case "RUN":
+				this.runHandler = handler;
+				break;
+			case "COLLISION":
+				this.setCollisionDetection(true, handler);
+				break;
+			case "STOP":
+				this.stopHandler = handler;
+				break;
+			case "END":
+				this.endHandler = handler;
+				break;
+			default: break;
+		}
+	}
 	this.power_notifications = [null, false, false, false, false];
 	this.stopPowerNotifications = function(){
-		window.clearInterval(this.power_timeout_id);
+		if (this.power_timeout_id !== null)
+			window.clearTimeout(this.power_timeout_id);
 		this.power_timeout_id = null;
 	};
-	
-	this.collisionHandler = function(){};
+	this.powerNotificationHandler = function(){
+		var button = "<div id='dialogButton' onclick='Utils.closeDialog();'>OK</div>";
+		if (!this.got_power_notification){
+			SpheroManager.alertMessage("Sphero Off", "Cannot communicate with Sphero.<br/><br/>It may have shut off due to inactivity, lack of battery charge, or may simply be out of range.", button);
+			SpheroManager.disconnect();			
+			this.stopPowerNotifications();
+		}else{
+			this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
+		}
+		this.got_power_notification = false;
+	};
 	
 	this.isConnected = false;
 	this.testConnection = function() {
@@ -94,15 +130,7 @@ function Sphero(url) {
 		});
 		this.got_power_notification = true;
 		
-		this.power_timeout_id = window.setInterval(function(){
-			var button = "<div id='dialogButton' onclick='Utils.closeDialog();'>OK</div>";
-			if (!this.got_power_notification){
-				SpheroManager.alertMessage("Sphero Off", "Cannot communicate with Sphero.<br/><br/>It may have shut off due to inactivity, lack of battery charge, or may simply be out of range.<br/><br/>Disconnecting from server.", button);
-				SpheroManager.disconnect();
-			}
-			this.got_power_notification = false;
-			this.stopPowerNotifications();
-		}.bind(this), this.power_timeout);
+		this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
 	}
 	this.cancelConnection = function(){
 		var command = {"command": "cancelConnection"};
@@ -208,7 +236,7 @@ function Sphero(url) {
 		//no commands in queue or no current timeout
 		if (this.timeout_id == null && this.collisionHandler !== null){
 			this.collisionHandler();
-			this.begin_execute();
+			this.begin_execute(false);
 		}else{					
 			//REMEMBER THE OLD COMMANDS
 			var commands = this.command_queue.splice(0);
@@ -251,7 +279,25 @@ function Sphero(url) {
 	}
 	
 	//actual execution and stuff
-	this.clearAllCommands = function(){
+	this.stopProgram = function(){
+		this.command_queue = [];
+		clearTimeout(this.timeout_id);
+		this.timeout_id = null;
+		
+		var command = {"command": "stop"};
+		window.connection.send(command);
+		if (this.stopHandler !== null)
+			this.stopHandler();
+		this.begin_execute(false);
+	}
+	
+	this.clearAllCommands = function(clear_stop_handler){
+		if (clear_stop_handler === undefined)
+			clear_stop_handler = true;
+		this.clearEventHandlers();
+		if (clear_stop_handler)
+			this.stopHandler = null;
+	
 		this.command_queue = [];
 		clearTimeout(this.timeout_id);
 		this.timeout_id = null;
@@ -261,8 +307,12 @@ function Sphero(url) {
 		var command = {"command": "clear"};
 		window.connection.send(command);
 	}
-	this.begin_execute = function(){
+	this.begin_execute = function(execute_run_handler){
 		this.then = Date.now();
+		if (execute_run_handler === undefined)
+			execute_run_handler = true;
+		if (this.runHandler !== null && execute_run_handler)
+			this.runHandler();
 		this.timeout_id = setTimeout(this.execute(), 0);
 	}
 	//EXECUTE FUNCTION. ACTUAL CODE FOR MOST THINGS
@@ -335,10 +385,21 @@ function Sphero(url) {
 					this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);
 					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
 					return;
+				//FOR AFTER THE END PROGRAM EVENT HANDLER
+				case "final_end":
+					return;
 				default:
 					break;
 			}
 			this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);
+		}else{
+			if (this.endHandler !== null){
+				this.endHandler();
+				if (this.command_queue.length > 0){
+					this.command_queue.push([null, "final_end"]);
+					this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);
+				}
+			}
 		}
 	}
 }
