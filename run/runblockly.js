@@ -376,9 +376,10 @@ SpheroManager.calibrate = function(){
 	for (var i = 0; i < 3; i++){
 		SpheroManager.sphero.setRGB("#00ff00", null);
 		SpheroManager.sphero.rollForward(null);
-		SpheroManager.sphero.wait(1, null);
+		SpheroManager.sphero.wait(0.8, null);
 		SpheroManager.sphero.stop(null);
 		SpheroManager.sphero.setRGB("#ff0000", null);
+		SpheroManager.sphero.wait(1, null);
 	}
 	SpheroManager.sphero.setSpeed(100, null);
 	SpheroManager.sphero.begin_execute();
