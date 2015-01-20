@@ -191,7 +191,7 @@ function Sphero(url) {
 		this.command_queue.push(["rollForward", blockID]);
 	}
 	this.stop = function(blockID) {
-		this.command_queue.push(["stop"], blockID);
+		this.command_queue.push(["stop", blockID]);
 	}
 	this.setHeading = function (heading, blockID) {		
 		this.command_queue.push(["setHeading", heading, blockID]);
@@ -322,11 +322,13 @@ function Sphero(url) {
 		this.timeout_id = null;
 		this.then = Date.now();
 		this.wait_time = this.COMMAND_WAIT_TIME;
-	
+		
 		var command = this.command_queue.shift();
 		if (command !== undefined){
-			Blockly.mainWorkspace.highlightBlock(command[command.length-1]);
-			command = command.slice(0, command.length-1);
+			var block_id = command.splice(command.length-1);
+			if (block_id !== null){
+				Blockly.mainWorkspace.highlightBlock(block_id);
+			}
 			
 			switch(command[0]){
 				case "setRGB":

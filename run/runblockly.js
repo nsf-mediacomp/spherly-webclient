@@ -1,3 +1,4 @@
+function SpheroManager(){};
 SpheroManager.sphero = null;
 var url = "ws://localhost:8080/sphero";
 var offX;
@@ -5,8 +6,6 @@ var offY;
 
 SpheroManager.spheroRun;
 SpheroManager.spheroCollide;
-
-function SpheroManager(){};
 
 window.onload = function(){
 	window.connection = new SpheroConnection(url);
@@ -27,7 +26,6 @@ window.onload = function(){
 	$("#closeDialogButton").on("click", Utils.closeDialog);
 	/*$("#codeButton").on("click", function(){
 		var generated_code = Blockly.JavaScript.workspaceToCode();
-			generated_code = getRidOfNakedCode(generated_code);
 			generated_code += "if (pixly_run) pixly_run();\n";
 		$("#dialogBody").html("<pre>" + generated_code + "</pre>");
 		
@@ -50,13 +48,36 @@ window.onload = function(){
 		document.getElementsByTagName("body")[0].style.cursor = "";
 		window.removeEventListener('mousemove', Utils.divMove, true);
 	});
+	
+	var openHover = function(e, message){
+		$("#hoverMessage").css('display', 'block');
+		$("#hoverMessage").offset({top: $(e.target).offset().top, left: $(e.target).offset().left+$(e.target).outerWidth(true)});
+		$("#hoverMessage").html(message);
+	};
+	var closeHover = function(e){
+		$("#hoverMessage").css('display', 'none');
+	};
+	
+	//Set up hover messages..
+	$("#selectButton").hover(function(e){
+		openHover(e, "Display a list of Spheros. Select one from the list to get its address so that you may then <span style='font-weight:bold;color:#555555;'>Connect</span> to it.");
+	}, closeHover);
+	$("#connectButton").hover(function(e){
+		openHover(e, "Attempt to connect to the Sphero specified by the address in the address box to the left.");
+	}, closeHover);
+	$("#calibrateButton").hover(function(e){
+		openHover(e, "Sphero will <span style='font-weight:bold;color:#001188;'>Move Forward</span> slowly in intervals so that you may determine which direction Sphero thinks is <span style='font-weight:bold;color:#001188;'>Forward</span> currently.");
+	}, closeHover);
+	
+	//in language.js
+	SpheroManager.UpdateLanguageMessages();
 }
 
 SpheroManager.example_projects = {};
 
 SpheroManager.openProject = function(){
 	var message = $(document.createElement("div"));
-	message.append(document.createTextNode("Select XML File: "));
+	message.append(document.createTextNode(Blockly.Msg.SELECT_XML_FILE));
 	message.css("margin-top", "-8px");
 	var fileinput = $(document.createElement("input"));
 
@@ -74,15 +95,15 @@ SpheroManager.openProject = function(){
 	fileinput.css("margin-bottom", "10px");
 	message.append(fileinput);
 		message.append(document.createElement("br"));
-	message.append(document.createTextNode("Or choose example project: "));
+	message.append(document.createTextNode(Blockly.Msg.CHOOSE_EXAMPLE));
 	var example_select = $(document.createElement("select"));
 	var options_array = [
 		["", ""],
-		["About Face", "about_face"],
-		["About Face (Collision)", "about_face_collision"],
-		["Color Cycle", "color_test"],
-		["Roll in a Square", "square"],
-		["Roll in a Square (Spiral)", "square_spiral"]
+		[Blockly.Msg.EXAMPLE_ABOUT_FACE, "about_face"],
+		[Blockly.Msg.EXAMPLE_ABOUT_FACE_COLLISION, "about_face_collision"],
+		[Blockly.Msg.EXAMPLE_COLOR_CYCLE, "color_test"],
+		[Blockly.Msg.EXAMPLE_ROLL_SQUARE, "square"],
+		[Blockly.Msg.EXAMPLE_ROLL_SQUARE_SPIRAL, "square_spiral"]
 	];
 	for (var i = 0; i < options_array.length; i++){
 		var option = $(document.createElement("option"));
@@ -114,7 +135,7 @@ SpheroManager.openProject = function(){
 	
 	
 	var button = $(document.createElement('div'));
-	button.html("Load Project");
+	button.html(Blockly.Msg.LOAD_PROJECT);
 	button.attr('id', 'dialogButton');
 	button.click(function(e){
 		var xml = $("#dialog_block_xml").val();
@@ -124,7 +145,7 @@ SpheroManager.openProject = function(){
 	});
 	button.width(150);
 	
-	SpheroManager.alertMessage("Open Project", message, button);
+	SpheroManager.alertMessage(Blockly.Msg.OPEN_PROJECT, message, button);
 	$("#dialog").height(320);
 }
 
@@ -133,11 +154,11 @@ SpheroManager.saveProject = function(){
 	xml = Blockly.Xml.domToPrettyText(xml);
 	
 	var message = $(document.createElement("div"));
-	message.append(document.createTextNode("Filename: "));
+	message.append(document.createTextNode(Blockly.Msg.FILENAME));
 	var filename = $(document.createElement("input"));
 	filename.attr("type", "text");
 	filename.attr("id", "filename_filename");
-	filename.val("SpheroProject.xml");
+	filename.val(Blockly.Msg.SPHEROPROJECT_XML);
 	message.append(filename);
 		message.append(document.createElement("br"));
 	var textarea = $(document.createElement('textarea'));
@@ -147,7 +168,7 @@ SpheroManager.saveProject = function(){
 	message.append(textarea);
 	
 	var button = $(document.createElement('div'));
-	button.html("Save Project");
+	button.html(Blockly.Msg.SAVE_PROJECT);
 	button.attr('id', 'dialogButton');
 	button.click(function(e){
 		Utils.createDownloadLink("#export", $("#dialog_block_xml").val(), $("#filename_filename").val());
@@ -156,7 +177,7 @@ SpheroManager.saveProject = function(){
 	});
 	button.width(150);
 	
-	SpheroManager.alertMessage("Save Project / Download Blocks", message, button);
+	SpheroManager.alertMessage(Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS, message, button);
 }
 
 SpheroManager.alertMessage = function(title, message, button){
@@ -191,43 +212,49 @@ SpheroManager.connect = function() {
 	var spheroAddress = $("#spheroAddress").val();
 
 	var message = $(document.createElement('div')).attr('id', 'tableWrapper');
-	message.html("attempting connection with sphero<br/>at address: "+spheroAddress);
+	message.html(Blockly.Msg.ATTEMPTING_CONNECTION(spheroAddress));
 	
 	var button = $(document.createElement('div')).attr('id', 'dialogButton');
 	button.on('click', function(e){
 		Utils.closeDialog();
 		$("#selectButton").attr('disabled', false);
 		$("#connectButton").attr('disabled', false);
+		$("#hoverMessage").css('display', 'none');
 		SpheroManager.sphero.cancelConnection();
-	}).html("Cancel");
+	}).html(Blockly.Msg.CANCEL);
 	SpheroManager.alertMessage("Connecting", message, button);
 
+	$("#hoverMessage").css('display', 'none');
 	$("#selectButton").attr("disabled", true);
 	$("#connectButton").attr("disabled", true);
 	SpheroManager.sphero.connect(spheroAddress, 'sphero', function(is_connected, already_connected){
 		button = $(document.createElement('div')).attr('id', 'dialogButton');
 		button.on('click', function(e){ Utils.closeDialog(); });
-		button.html("OK");
+		button.html(Blockly.Msg.OK);
 		if (!is_connected) {
-			message = $(document.createElement('div')).html("Unable to connect<br/><br/>Perhaps the sphero is off, or already connected to something else?<br/><br/>If not, try connecting again!");
+			message = $(document.createElement('div')).html(Blockly.Msg.CONNECTION_FAILED);
 			
-			SpheroManager.alertMessage("Not Connected", message, button);
+			SpheroManager.alertMessage(Blockly.Msg.NOT_CONNECTED, message, button);
 			$("#selectButton").attr("disabled", false);
 			$("#connectButton").attr("disabled", false);
 			return;
 		}
 		
-		message = $(document.createElement("div")).html("Connection to Sphero was successful.");
+		message = $(document.createElement("div")).html(Blockly.Msg.CONNECTION_SUCCESSFUL);
 		SpheroManager.sphero.connectionReset();
+		
+		$("#hoverMessage").css('display', 'none');
 		$("#selectButton").attr("disabled", true);
 		$("#connectButton").attr("disabled", true);
 		$("#disconnectButton").attr("disabled", false);
 		//$("#spheroHeading").attr("disabled", false);
+		
+		$("#calibrateButton").attr("disabled", false);
 		$("#runButton").attr("disabled", false);
 		$("#stopButton").attr("disabled", false);
 		$("#sleepButton").attr("disabled", false);
 		
-		SpheroManager.alertMessage("Connected", message, button);
+		SpheroManager.alertMessage(Blockly.Msg.CONNECTED, message, button);
 	});
 }
 
@@ -238,15 +265,15 @@ SpheroManager.selectSphero = function() {
 }
 
 SpheroManager.listDevices = function(){
-	var message = $(document.createElement('div')).attr('id', 'tableWrapper').html("searching for devices");
-	var button = $(document.createElement('div')).attr('id', 'dialogButton').html("Cancel");
+	var message = $(document.createElement('div')).attr('id', 'tableWrapper').html(Blockly.Msg.SEARCHING_FOR_DEVICES);
+	var button = $(document.createElement('div')).attr('id', 'dialogButton').html(Blockly.Msg.CANCEL);
 	button.on('click', function(e){
 		Utils.closeDialog();
 		$("#selectButton").attr('disabled', false);
 		$("#connectButton").attr('disabled', false);
 		SpheroManager.sphero.cancelListSpheros();
 	});
-	SpheroManager.alertMessage("Select Address", message, button);
+	SpheroManager.alertMessage(Blockly.Msg.SELECT_ADDRESS, message, button);
 
 	var addressBox = $("#spheroAddress")[0];
 	var tableWrapper = $("#tableWrapper")[0];
@@ -273,6 +300,7 @@ SpheroManager.listDevices = function(){
 		
 		SpheroManager.alertMessage("Select Address", message, button);
 		
+		$("#hoverMessage").css('display', 'none');
 		$("#selectButton")[0].disabled = false;
 		$("#connectButton")[0].disabled = false;
 	});
@@ -280,9 +308,12 @@ SpheroManager.listDevices = function(){
 
 SpheroManager.disconnect = function() {
 	SpheroManager.sphero.disconnect();
+	
+	$("#hoverMessage").css('display', 'none');
 	$("#selectButton")[0].disabled = false;
 	$("#connectButton")[0].disabled = false;
 	$("#disconnectButton")[0].disabled = true;
+	$("#calibrateButton")[0].disabled = true;
 	//$("#spheroHeading")[0].disabled = true;
 	$("#runButton")[0].disabled = true;
 	$("#stopButton")[0].disabled = true;
@@ -291,9 +322,12 @@ SpheroManager.disconnect = function() {
 
 SpheroManager.sleep = function(){
 	SpheroManager.sphero.sleep();
+	
+	$("#hoverMessage").css('display', 'none');
 	$("#selectButton")[0].disabled = false;
 	$("#connectButton")[0].disabled = false;
 	$("#disconnectButton")[0].disabled = true;
+	$("#calibrateButton")[0].disabled = true;
 	//$("#spheroHeading")[0].disabled = true;
 	$("#runButton")[0].disabled = true;
 	$("#stopButton")[0].disabled = true;
@@ -336,32 +370,24 @@ SpheroManager.loadBlocks = function(defaultXml){
   }
 };
 
-//TODO THIS IS PROBABLY UNSAFE
-SpheroManager.getRidOfNakedCode = function(jscode){
-	var lines = jscode.split("\n");
-	var f_depth = 0;
-	var is_in_function = false;
-	for (var i = 0; i < lines.length; i++){
-		if (lines[i].indexOf("//") == 0) continue;
-		
-		if (lines[i].match(/function(\s+[a-zA-Z0-9_\$]*)?\([^\)]*\)/)){
-			is_in_function = true;
-		}
-		
-		if (lines[i].indexOf("{") >= 0 && is_in_function)
-			f_depth++;
-		else if (lines[i].indexOf("}") >= 0 && f_depth > 0){
-			f_depth--;
-			if (f_depth == 0) is_in_function = false;
-		}
-		else if (!is_in_function && f_depth <= 0 && lines[i].replace(/\s/g,'') !== "" && !(lines[i].match(/\s*var/) && !lines[i].match(/\s*for/))){
-			lines[i] = "//" + lines[i];
-		}
+SpheroManager.calibrate = function(){
+	SpheroManager.sphero.clearAllCommands();
+	SpheroManager.sphero.setSpeed(50, null);
+	for (var i = 0; i < 3; i++){
+		SpheroManager.sphero.setRGB("#00ff00", null);
+		SpheroManager.sphero.rollForward(null);
+		SpheroManager.sphero.wait(1, null);
+		SpheroManager.sphero.stop(null);
+		SpheroManager.sphero.setRGB("#ff0000", null);
 	}
-	return lines.join("\n");
-}
+	SpheroManager.sphero.setSpeed(100, null);
+	SpheroManager.sphero.begin_execute();
+};
 
 SpheroManager.run = function() {
+	$("#runButton").html("&nbsp;Reset Program ");
+	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.reset);}
+
 	var message = $(document.createElement('div')).html("Sphero is not connected.");
 	var button = $(document.createElement('div')).attr('id', 'dialogButton').html("OK");
 	button.on('click', function(e){ Utils.closeDialog(); });
@@ -370,16 +396,14 @@ SpheroManager.run = function() {
 		return;
 	}
 
-	SpheroManager.sphero.clearAllCommands();
 	SpheroManager.evalCode();
+	SpheroManager.sphero.clearAllCommands();
 	SpheroManager.sphero.begin_execute();
-}
-
+};
+	
 SpheroManager.evalCode = function(){
 	var jscode = Blockly.JavaScript.workspaceToCode();
 	
-	/*THIS IS KIND OF HACKY AND NASTY*/
-	jscode = SpheroManager.getRidOfNakedCode(jscode);
 	
 	Blockly.mainWorkspace.traceOn(true);
 	//Add this to prevent infinite loop crashing :D!!!
@@ -401,6 +425,8 @@ SpheroManager.evalCode = function(){
 }
 
 SpheroManager.resetProgram = function(){
+	$("#runButton").html("&#9654; Run Program");
+	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.run);}
 	SpheroManager.sphero.clearAllCommands();
 	Blockly.mainWorkspace.traceOn(false);
 }

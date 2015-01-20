@@ -28,6 +28,17 @@ th,td{
 	right: 10px;
 	top: 20px;
 }
+#hoverMessage{
+	border: 1px solid black;
+	background: #eeeeee;
+	font-size: 14px;
+	width: 200px;
+	padding: 3px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	display: none;
+}
 
 /*DIalog*/
 #dialog{

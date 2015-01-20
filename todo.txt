@@ -1,15 +1,15 @@
 INTERESTING:: SHOULD SWITCH TO USING THIS AFTER OTHER CHANGES:
 https://developers.google.com/blockly/installation/js-interpreter
 
+TEST:
+	1. CALIBRATE
+	2. Support of more than one Sphero to illustrate the collaboration between robots 
+	
 HTML
-	-RUN PROGRAM should change into RESET PROGRAM (when pressed)
-	- Support of more than one Sphero to illustrate the collaboration between robots
-	- Support calibration
 	0. Add More Examples! (and fix old examples to work with new blocks)
 	1. add a default wait between each command!!!
 		(like the slider for turtle)
-	3. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
-	2. getRidOfNakedCode is probably poorly created
+	2. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
 	1. Revise the Manual
@@ -22,6 +22,12 @@ SERVER
 		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
 		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
 		at java.lang.Thread.run(Unknown Source)
+		
+	java.lang.NullPointerException
+		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
+		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
+		at java.lang.Thread.run(Unknown Source)
+
 		
 	Stop Rolling
 	java.io.IOException: Stream closed
