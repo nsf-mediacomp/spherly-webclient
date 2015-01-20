@@ -13,6 +13,7 @@ HTML
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
 	1. Revise the Manual
+	3. add an "offline version" that demonstrates the sphero action when not connected to a sphero
 	
 SERVER
 	0. server needs to disconnect from sphero when disconnected from web client

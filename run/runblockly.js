@@ -118,7 +118,6 @@ SpheroManager.openProject = function(){
 		}else{
 			$.get("../demo/"+value+".xml", function(data){
 				data = Utils.xmlToString(data);
-				console.log(data);
 				SpheroManager.example_projects[value] = data;
 				$(textarea).html(data);
 			});
@@ -371,6 +370,7 @@ SpheroManager.loadBlocks = function(defaultXml){
 };
 
 SpheroManager.calibrate = function(){
+	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.sphero.clearAllCommands();
 	SpheroManager.sphero.setSpeed(50, null);
 	for (var i = 0; i < 3; i++){
@@ -386,7 +386,7 @@ SpheroManager.calibrate = function(){
 
 SpheroManager.run = function() {
 	$("#runButton").html("&nbsp;Reset Program ");
-	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.reset);}
+	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.resetProgram);}
 
 	var message = $(document.createElement('div')).html("Sphero is not connected.");
 	var button = $(document.createElement('div')).attr('id', 'dialogButton').html("OK");
@@ -396,6 +396,7 @@ SpheroManager.run = function() {
 		return;
 	}
 
+	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.evalCode();
 	SpheroManager.sphero.clearAllCommands();
 	SpheroManager.sphero.begin_execute();
@@ -427,6 +428,7 @@ SpheroManager.evalCode = function(){
 SpheroManager.resetProgram = function(){
 	$("#runButton").html("&#9654; Run Program");
 	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.run);}
+	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.sphero.clearAllCommands();
 	Blockly.mainWorkspace.traceOn(false);
 }

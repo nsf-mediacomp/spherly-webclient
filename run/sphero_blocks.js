@@ -30,6 +30,30 @@ Blockly.JavaScript['sphero_run'] = function(block) {
   return code;
 };
 
+Blockly.Blocks['sphero_collision'] = {
+	init: function(){
+		this.setHelpUrl(Blockly.Msg.SPHERO_API_HELPURL);
+		this.setColour(210);
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.SPHERO_EVENT_COLLISION);
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setTooltip(Blockly.Msg.SPHERO_EVENT_TOOLTIP);
+		this.setDeletable(true);
+	}
+};
+
+Blockly.JavaScript['sphero_collision'] = function(block){
+	var event = block.getFieldValue('EVENT');
+	var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
+	var code = 'SpheroManager.sphero.attachEventHandler("COLLISION", function(){' +
+					do_branch +
+				'\n});\n';
+	return code;
+};
+
 Blockly.Blocks['sphero_event'] = {
 	init: function(){
 		this.setHelpUrl(Blockly.Msg.SPHERO_API_HELPURL);

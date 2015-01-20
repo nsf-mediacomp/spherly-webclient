@@ -66,6 +66,7 @@ function Sphero(url) {
 	this.collisionHandler = null;
 	this.clearEventHandlers();
 	this.attachEventHandler = function(event, handler){
+		console.log(event);
 		switch(event){
 			case "RUN":
 				this.runHandler = handler;
@@ -291,13 +292,7 @@ function Sphero(url) {
 		this.begin_execute(false);
 	}
 	
-	this.clearAllCommands = function(clear_stop_handler){
-		if (clear_stop_handler === undefined)
-			clear_stop_handler = true;
-		this.clearEventHandlers();
-		if (clear_stop_handler)
-			this.stopHandler = null;
-	
+	this.clearAllCommands = function(){
 		this.command_queue = [];
 		clearTimeout(this.timeout_id);
 		this.timeout_id = null;
@@ -311,6 +306,8 @@ function Sphero(url) {
 		this.then = Date.now();
 		if (execute_run_handler === undefined)
 			execute_run_handler = true;
+		console.log(this.runHandler);
+		console.log(execute_run_handler);
 		if (this.runHandler !== null && execute_run_handler)
 			this.runHandler();
 		this.timeout_id = setTimeout(this.execute(), 0);
