@@ -90,7 +90,7 @@ SpheroManager.openProject = function(){
 	SpheroManager.alertMessage("Open Project", message, button);
 }
 SpheroManager.LoadProjectButton = function(e){
-	var xml = $("#dialog_block_xml").text();
+	var xml = $("#dialog_block_xml").val();
 	Blockly.mainWorkspace.clear();
 	SpheroManager.loadBlocks(xml);
 	Utils.closeDialog();
@@ -123,7 +123,7 @@ SpheroManager.saveProject = function(){
 	SpheroManager.alertMessage("Save Project / Download Blocks", message, button);
 }
 SpheroManager.SaveProjectButton = function(e){
-	Utils.createDownloadLink("#export", $("#dialog_block_xml").text(), $("#filename_filename").val());
+	Utils.createDownloadLink("#export", $("#dialog_block_xml").val(), $("#filename_filename").val());
 	$("#export")[0].click();
 	Utils.closeDialog();
 }
@@ -343,6 +343,11 @@ SpheroManager.run = function() {
 	}
 	SpheroManager.spheroCollide = undefined;
 	SpheroManager.spheroRun = undefined;
+	
+	Blockly.mainWorkspace.traceOn(true);
+	//Add this to prevent infinite loop crashing :D!!!
+	window.loopTrap = 1000;
+	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.loopTrap <= 0) throw "Infinity";\n';
 
 	var jscode = Blockly.JavaScript.workspaceToCode();
 	
@@ -351,12 +356,6 @@ SpheroManager.run = function() {
 	jscode += "if (SpheroManager.spheroCollide) SpheroManager.spheroCollide();\n";
 	jscode += "else sphero.disableCollisionDetection();\n";
 	jscode += "if (SpheroManager.spheroRun) SpheroManager.spheroRun();\n";
-	//console.log(jscode);
-	
-	Blockly.mainWorkspace.traceOn(true);
-	//Add this to prevent infinite loop crashing :D!!!
-	window.loopTrap = 1000;
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.loopTrap <= 0) throw "Infinity";\n';
 	
 	sphero.clearAllCommands();
 	try {
