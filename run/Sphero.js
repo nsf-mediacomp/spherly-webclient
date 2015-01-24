@@ -249,6 +249,20 @@ function Sphero(url) {
 		this.command_queue.push(["timedCalibrate", time, blockID]);
 	}
 	
+	this.HandleHandler = function(handler){
+		//for infinite loops :_)
+		try{
+			handler();
+		}
+		catch (e) {
+			if (e !== "Infinity"){
+				var e = $(document.createTextNode(e));
+				console.log(jscode);
+				SpheroManager.alertMessage("Error", e, button);
+			}
+		}
+	}
+	
 	this.spheroMessageCallback = function(data){
 		var data = JSON.parse(data);
 		if (data['collision']){
@@ -281,7 +295,7 @@ function Sphero(url) {
 		console.log("COLLISION DETECTED: " + this.timeout_id + ", " + this.wait_time + ", " + (Date.now() - this.then));
 		//no commands in queue or no current timeout
 		if (this.timeout_id == null && this.collisionHandler !== null){
-			this.collisionHandler();
+			this.HandleHandler(this.collisionHandler);
 			this.begin_execute(false);
 		}else{					
 			//REMEMBER THE OLD COMMANDS
@@ -296,7 +310,7 @@ function Sphero(url) {
 			//GIVE PRECENDENCE TO THE COLLISION DETECTION EVENT
 			this.command_queue = [];
 			if (this.collisionHandler !== null)
-				this.collisionHandler();
+				this.HandleHandler(this.collisionHandler);
 			//PUT THE OLD COMMANDS BACK ON
 			this.command_queue.push(["wait", (this.wait_time)/1000.0]);
 			for (var i = 0; i < commands.length; i++){
@@ -333,7 +347,7 @@ function Sphero(url) {
 		var command = {"command": "stop"};
 		window.connection.send(command);
 		if (this.stopHandler !== null)
-			this.stopHandler();
+			this.HandleHandler(this.stopHandler);
 		this.begin_execute(false);
 	}
 	
@@ -352,7 +366,7 @@ function Sphero(url) {
 		if (execute_run_handler === undefined)
 			execute_run_handler = true;
 		if (this.runHandler !== null && execute_run_handler)
-			this.runHandler();
+			this.HandleHandler(this.runHandler);
 		this.timeout_id = setTimeout(this.execute(), 0);
 	}
 	//EXECUTE FUNCTION. ACTUAL CODE FOR MOST THINGS
@@ -483,7 +497,7 @@ function Sphero(url) {
 			this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);
 		}else{
 			if (this.endHandler !== null){
-				this.endHandler();
+				this.HandleHandler(this.endHandler);
 				if (this.command_queue.length > 0){
 					this.command_queue.push([null, "final_end"]);
 					this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);

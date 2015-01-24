@@ -6,15 +6,9 @@ TEST:
 	2. Support of more than one Sphero to illustrate the collaboration between robots 
 	
 HTML
-	1. Add new blocks (that are modification of old ones)
-		(MAKE SURE UPON MODIFICATION THAT OLD BLOCK CODE WILL WORK
-			(for these X second ones, make a default seconds in the function))
-		a. Roll Forward for (X) seconds!
-		b. Roll in direction (Y) for (X) seconds!
-		c. Turn in (X) seconds!
-		
+	1. MAKE MAC OSX JAR AND REMOVE GOOGLE DRIVE LINKS IN README (just link to releases)
+		-and make new release with the new server jars, and new webclient release
 	0. collision sensitivity slider
-	0. Add More Examples!
 	2. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
