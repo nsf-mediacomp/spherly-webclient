@@ -4,13 +4,16 @@ goog.provide('Blockly.Msg.en');
 
 goog.require('Blockly.Msg');
 
-//SPHERO UI MESSAGES
+//---------------------------------------------------------------------
+//------------------------ SPHERO UI MESSAGES--------------------------
+//---------------------------------------------------------------------
 Blockly.Msg.OPEN_PROJECT = "Open Project";
 Blockly.Msg.SELECT_XML_FILE = "Select XML File: ";
 Blockly.Msg.CHOOSE_EXAMPLE = "Or choose example project: ";
 Blockly.Msg.LOAD_PROJECT = "Load Project";
 Blockly.Msg.EXAMPLE_ABOUT_FACE = "About Face";
 Blockly.Msg.EXAMPLE_ABOUT_FACE_COLLISION = "About Face (Collision)";
+Blockly.Msg.EXAMPLE_CALIBRATE = "Calibration Example";
 Blockly.Msg.EXAMPLE_COLOR_CYCLE = "Color Cycle";
 Blockly.Msg.EXAMPLE_ROLL_SQUARE = "Roll in a Square";
 Blockly.Msg.EXAMPLE_ROLL_SQUARE_SPIRAL = "Roll in a Square (Spiral)";
@@ -33,13 +36,19 @@ Blockly.Msg.CANCEL = "Cancel";
 Blockly.Msg.OK = "OK";
 Blockly.Msg.SELECT_ADDRESS = "Select Address";
 
-// SPHERO BLOCK MESSAGES
+Blockly.Msg.CALIBRATE = "Calibrate";
+Blockly.Msg.CALIBRATE_MESSAGE = "Rotate the Sphero to calibrate it.<br/>The direction of the blue LED is the opposite of what Sphero considers <span style='font-weight:bold;color:#001188;'>Forward</span>.";
+Blockly.Msg.END_CALIBRATE = "End Calibration";
+
+//---------------------------------------------------------------------
+//------------------------ SPHERO BLOCK MESSAGES-----------------------
+//---------------------------------------------------------------------
 Blockly.Msg.SPHERO_GOSPHERO_URL = "http://www.gosphero.com";
 Blockly.Msg.SPHERO_API_HELPURL = 'http://orbotixinc.github.io/Sphero-Docs/docs/sphero-api/bootloader-and-sphero.html';
-Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_setinterval.asp';
+Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_settimeout.asp';
 
-Blockly.Msg.SPHERO_RUN_TITLE = "When Run Button clicked";
-Blockly.Msg.SPHERO_RUN_TOOLTIP = "The block that contains what code to execute when the run button is pressed.";
+Blockly.Msg.SPHERO_RUN_TITLE = "When Run Program clicked";
+Blockly.Msg.SPHERO_RUN_TOOLTIP = "The block that contains what code to execute when the run program button is pressed.";
 Blockly.Msg.SPHERO_EVENT_COLLISION = "When Sphero runs into something";
 Blockly.Msg.SPHERO_EVENT_STOP = "When Stop Button clicked";
 Blockly.Msg.SPHERO_EVENT_END = "When Sphero program finishes";
@@ -48,13 +57,18 @@ Blockly.Msg.SPHERO_EVENT_TOOLTIP = "Blocks here will be run when the specified e
 Blockly.Msg.SPHERO_COLLISION_HELPURL = "http://orbotixinc.github.io/Sphero-Docs/docs/collision-detection/index.html";
 Blockly.Msg.SPHERO_COLLISION_TITLE = "When Sphero runs into something";
 Blockly.Msg.SPHERO_COLLISION_TOOLTIP = "The block that contains what code to execute when the sphero collides with something.";
+Blockly.Msg.SPHERO_SETBACKLED_TITLE = "set sphero tail LED brightness to";
+Blockly.Msg.SPHERO_SETBACKLED_TOOLTIP = "Change Sphero's tail LED to have the specified brightness. The Tail LED is a seperate LED on the tail side of the Sphero which indicates the Sphero's facing (forwards is opposite the tail).";
 Blockly.Msg.SPHERO_SETRGB_TITLE = "change sphero colour to";
-Blockly.Msg.SPHERO_SETRGB_TOOLTIP = "Change Sphero's LED to the specified color.";
+Blockly.Msg.SPHERO_SETRGB_TOOLTIP = "Change Sphero's background LED to the specified color.";
+Blockly.Msg.SPHERO_CALIBRATECOMMAND_TITLE = "calibrate sphero for";
+Blockly.Msg.SPHERO_CALIBRATECOMMAND_TOOLTIP = "Sphero will enter calibration mode for the specified number of seconds to allow the user to point it in the desired direction.";
 Blockly.Msg.SPHERO_ROLL_TITLE = 'sphero roll in direction';
 Blockly.Msg.SPHERO_ROLL_TOOLTIP = "Tell the Sphero to roll in a given direction. The direction is a degree position from 0 to 359 degrees, and is relative to the last calibrated direction (controlled by the robot, not by the TURN command).";
 Blockly.Msg.SPHERO_ROLLFORWARD_TITLE = 'sphero roll forward';
 Blockly.Msg.SPHERO_ROLLFORWARD_TOOLTIP = "Tell the Sphero to roll forward. It will roll in the direction of its most recently set direction, at its most recently set speed. Default speed is 200 cm/s";
 Blockly.Msg.SPHERO_TURN_TITLE = 'sphero turn';
+Blockly.Msg.SPHERO_TURN_TITLE_2 = "degrees and wait for";
 Blockly.Msg.SPHERO_TURN_DEGREES = "degrees";
 Blockly.Msg.SPHERO_TURN_TOOLTIP = "Turn the Sphero a certain number of degrees (0 to 360). Sphero will remember previous turn commands, and so each turn is relative to it's current facing. For example: turning 180 degrees and then turning 180 degrees afterwords will make the Sphero be facing the same direction from before.";
 Blockly.Msg.SPHERO_SETSTABILIZATION_TITLE = 'sphero stabilize';

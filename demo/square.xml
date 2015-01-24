@@ -54,5 +54,4 @@
       </block>
     </statement>
   </block>
-  <block type="sphero_collision" id="2" x="304" y="254"></block>
 </xml>

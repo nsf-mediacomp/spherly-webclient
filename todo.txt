@@ -2,13 +2,19 @@ INTERESTING:: SHOULD SWITCH TO USING THIS AFTER OTHER CHANGES:
 https://developers.google.com/blockly/installation/js-interpreter
 
 TEST:
-	1. CALIBRATE
+	0. Highlight loop wrappers & function wrappers & conditionals?
 	2. Support of more than one Sphero to illustrate the collaboration between robots 
 	
 HTML
-	0. Add More Examples! (and fix old examples to work with new blocks)
-	1. add a default wait between each command!!!
-		(like the slider for turtle)
+	1. Add new blocks (that are modification of old ones)
+		(MAKE SURE UPON MODIFICATION THAT OLD BLOCK CODE WILL WORK
+			(for these X second ones, make a default seconds in the function))
+		a. Roll Forward for (X) seconds!
+		b. Roll in direction (Y) for (X) seconds!
+		c. Turn in (X) seconds!
+		
+	0. collision sensitivity slider
+	0. Add More Examples!
 	2. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
@@ -18,17 +24,28 @@ HTML
 SERVER
 	0. server needs to disconnect from sphero when disconnected from web client
 		(consistently, sometimes does sometimes doesn't)
+		
+	----------------------------
+	1. When this error is thrown display a warning message like "you already have another instance of the server running, or something else is taking up the required network port!":
+	
+	java.net.BindException: Address already in use: bind
+		at sun.nio.ch.Net.bind0(Native Method)
+		at sun.nio.ch.Net.bind(Unknown Source)
+		at sun.nio.ch.Net.bind(Unknown Source)
+		at sun.nio.ch.ServerSocketChannelImpl.bind(Unknown Source)
+		at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
+		at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
+		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:286)
+		at java.lang.Thread.run(Unknown Source)
+		
+	----------------------------
 	end listening...
 	java.lang.NullPointerException
 		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
 		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
-		at java.lang.Thread.run(Unknown Source)
-		
-	java.lang.NullPointerException
-		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
-		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
-		at java.lang.Thread.run(Unknown Source)
+		at java.lang.Thread.run(Unknown Source
 
+	-------------------
 		
 	Stop Rolling
 	java.io.IOException: Stream closed
@@ -38,3 +55,43 @@ SERVER
 		at Sphero$1.listen(Sphero.java:262)
 		at Sphero$1.run(Sphero.java:321)
 		at java.lang.Thread.run(Unknown Source)
+	
+	------------------
+	
+	java.io.IOException: Failed to write; [10053] An established connection was aborted by the software in your host machine.
+		at com.intel.bluetooth.BluetoothStackMicrosoft.send(Native Method)
+		at com.intel.bluetooth.BluetoothStackMicrosoft.connectionRfWrite(BluetoothStackMicrosoft.java:829)
+		at com.intel.bluetooth.BluetoothRFCommOutputStream.write(BluetoothRFCommOutputStream.java:84)
+		at java.io.OutputStream.write(Unknown Source)
+		at bluecoveRFCOMM.write(bluecoveRFCOMM.java:118)
+		at Sphero.Roll(Sphero.java:152)
+		at Sphero.Roll(Sphero.java:141)
+		at Sphero.Stop(Sphero.java:170)
+		at SpherlyWebSocketServer.onMessage(SpherlyWebSocketServer.java:191)
+		at org.java_websocket.server.WebSocketServer.onWebsocketMessage(WebSocketServer.java:492)
+		at org.java_websocket.WebSocketImpl.decodeFrames(WebSocketImpl.java:375)
+		at org.java_websocket.WebSocketImpl.decode(WebSocketImpl.java:158)
+		at org.java_websocket.server.WebSocketServer$WebSocketWorker.run(WebSocketServer.java:709)
+
+	java.io.IOException: Failed to read(byte[]); [10053] An established connection was aborted by the software in your host machine.
+		at com.intel.bluetooth.BluetoothStackMicrosoft.recv(Native Method)
+		at com.intel.bluetooth.BluetoothStackMicrosoft.connectionRfRead(BluetoothStackMicrosoft.java:817)
+		at com.intel.bluetooth.BluetoothRFCommInputStream.read(BluetoothRFCommInputStream.java:139)
+		at bluecoveRFCOMM.read(bluecoveRFCOMM.java:138)
+		at Sphero$1.readComm(Sphero.java:254)
+		at Sphero$1.listen(Sphero.java:262)
+		at Sphero$1.run(Sphero.java:321)
+		at java.lang.Thread.run(Unknown Source)
+
+	java.io.IOException: Failed to read(byte[]); [10053] An established connection was aborted by the software in your host machine.
+		at com.intel.bluetooth.BluetoothStackMicrosoft.recv(Native Method)
+		at com.intel.bluetooth.BluetoothStackMicrosoft.connectionRfRead(BluetoothStackMicrosoft.java:817)
+		at com.intel.bluetooth.BluetoothRFCommInputStream.read(BluetoothRFCommInputStream.java:139)
+		at java.io.InputStream.read(Unknown Source)
+		at bluecoveRFCOMM.read(bluecoveRFCOMM.java:134)
+		at Sphero$1.readComm(Sphero.java:254)
+		at Sphero$1.listen(Sphero.java:262)
+		at Sphero$1.run(Sphero.java:321)
+		at java.lang.Thread.run(Unknown Source)
+
+	end listening...

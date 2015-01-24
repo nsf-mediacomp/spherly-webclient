@@ -66,7 +66,7 @@ window.onload = function(){
 		openHover(e, "Attempt to connect to the Sphero specified by the address in the address box to the left.");
 	}, closeHover);
 	$("#calibrateButton").hover(function(e){
-		openHover(e, "Sphero will <span style='font-weight:bold;color:#001188;'>Move Forward</span> slowly in intervals so that you may determine which direction Sphero thinks is <span style='font-weight:bold;color:#001188;'>Forward</span> currently.");
+		openHover(e, "Sphero will enter calibration mode, where its Tail LED will light up, and you can rotate to tell Sphero which direction <span style='font-weight:bold;color:#001188;'>Forward</span> is.");
 	}, closeHover);
 	
 	//in language.js
@@ -101,6 +101,7 @@ SpheroManager.openProject = function(){
 		["", ""],
 		[Blockly.Msg.EXAMPLE_ABOUT_FACE, "about_face"],
 		[Blockly.Msg.EXAMPLE_ABOUT_FACE_COLLISION, "about_face_collision"],
+		[Blockly.Msg.EXAMPLE_CALIBRATE, "calibrate_demo"],
 		[Blockly.Msg.EXAMPLE_COLOR_CYCLE, "color_test"],
 		[Blockly.Msg.EXAMPLE_ROLL_SQUARE, "square"],
 		[Blockly.Msg.EXAMPLE_ROLL_SQUARE_SPIRAL, "square_spiral"]
@@ -372,159 +373,13 @@ SpheroManager.loadBlocks = function(defaultXml){
 SpheroManager.calibrate = function(){
 	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.sphero.clearAllCommands();
-	SpheroManager.sphero.setSpeed(50, null);
-	for (var i = 0; i < 3; i++){
-		SpheroManager.sphero.setRGB("#00ff00", null);
-		SpheroManager.sphero.rollForward(null);
-		SpheroManager.sphero.wait(0.8, null);
-		SpheroManager.sphero.stop(null);
-		SpheroManager.sphero.setRGB("#ff0000", null);
-		SpheroManager.sphero.wait(1, null);
-	}
-	SpheroManager.sphero.setSpeed(100, null);
-	SpheroManager.sphero.begin_execute();
+	SpheroManager.sphero.beginCalibrationMode();
+	
+	var message = $(document.createElement('div')).html(Blockly.Msg.CALIBRATE_MESSAGE);
+	var button = $(document.createElement('div')).attr('id', 'dialogButton').width(200).html(Blockly.Msg.END_CALIBRATE);
+	button.on('click', function(e){
+		SpheroManager.sphero.endCalibrationMode();
+		Utils.closeDialog();
+	});
+	SpheroManager.alertMessage("Calibrate Sphero", message, button);
 };
-
-SpheroManager.run = function() {
-	$("#runButton").html("&nbsp;Reset Program ");
-	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.resetProgram);}
-
-	var message = $(document.createElement('div')).html("Sphero is not connected.");
-	var button = $(document.createElement('div')).attr('id', 'dialogButton').html("OK");
-	button.on('click', function(e){ Utils.closeDialog(); });
-	if (SpheroManager.sphero == null || !SpheroManager.sphero.isConnected) {
-		SpheroManager.alertMessage("Not Connected", message, button);
-		return;
-	}
-
-	SpheroManager.sphero.clearEventHandlers();
-	SpheroManager.evalCode();
-	SpheroManager.sphero.clearAllCommands();
-	SpheroManager.sphero.begin_execute();
-};
-	
-SpheroManager.evalCode = function(){
-	var jscode = Blockly.JavaScript.workspaceToCode();
-	
-	
-	Blockly.mainWorkspace.traceOn(true);
-	//Add this to prevent infinite loop crashing :D!!!
-	window.loopTrap = 1000;
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.loopTrap <= 0) throw "Infinity";\n';
-	
-	
-	console.log(jscode);
-	try {
-		eval(jscode);
-	}
-	catch (e) {
-		if (e !== "Infinity"){
-			var e = $(document.createTextNode(e));
-			console.log(jscode);
-			SpheroManager.alertMessage("Error", e, button);
-		}
-	}
-}
-
-SpheroManager.resetProgram = function(){
-	$("#runButton").html("&#9654; Run Program");
-	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.run);}
-	SpheroManager.sphero.clearEventHandlers();
-	SpheroManager.sphero.clearAllCommands();
-	Blockly.mainWorkspace.traceOn(false);
-}
-
-SpheroManager.stop = function(){
-	SpheroManager.evalCode();
-	SpheroManager.sphero.stopProgram();
-}
-
-/**************************************UTILS**********************************/
-function Utils(){};
-
-Utils.divMove = function(e){
-	var div = $("#dialog");
-	div.css("position", "absolute");
-	div.css("top", (e.clientY-offY) + 'px');
-	div.css("left", (e.clientX-offX) + 'px');
-}
-
-Utils.closeDialog = function(){
-	$("#dialog").css("display", "none");
-}
-
-//http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-Utils.componentToHex = function (c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-
-Utils.rgbToHex = function(r, g, b){
-    return "#" + Utils.componentToHex(r) + Utils.componentToHex(g) + Utils.componentToHex(b);
-}
-
-Utils.hexToRgb = function(hex){
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
-}
-
-Utils.hsvToHex = function(h, s, v){
-	var c = Utils.HSVtoRGB(h, s, v);
-	return Utils.rgbToHex(c.r, c.g, c.b);
-}
-
-//http://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
-Utils.HSVtoRGB = function(h, s, v) {
-    var r, g, b, i, f, p, q, t;
-    i = Math.floor(h * 6);
-    f = h * 6 - i;
-    p = v * (1 - s);
-    q = v * (1 - f * s);
-    t = v * (1 - (1 - f) * s);
-    switch (i % 6) {
-        case 0: r = v, g = t, b = p; break;
-        case 1: r = q, g = v, b = p; break;
-        case 2: r = p, g = v, b = t; break;
-        case 3: r = p, g = q, b = v; break;
-        case 4: r = t, g = p, b = v; break;
-        case 5: r = v, g = p, b = q; break;
-    }
-    return {
-        r: Math.floor(r * 255),
-        g: Math.floor(g * 255),
-        b: Math.floor(b * 255)
-    };
-}
-
-//http://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
-Utils.createDownloadLink = function(anchorSelector, str, fileName){
-	if(window.navigator.msSaveOrOpenBlob) {
-		var fileData = [str];
-		blobObject = new Blob(fileData);
-		$(anchorSelector).click(function(){
-			window.navigator.msSaveOrOpenBlob(blobObject, fileName);
-		});
-	} else {
-		var url = "data:text/plain;charset=utf-8," + encodeURIComponent(str);
-		$(anchorSelector).attr("download", fileName);               
-		$(anchorSelector).attr("href", url);
-	}
-}
-
-//http://stackoverflow.com/questions/6507293/convert-xml-to-string-with-jquery
-Utils.xmlToString = function (xmlData) { 
-    var xmlString;
-    //IE
-    if (window.ActiveXObject){
-        xmlString = xmlData.xml;
-    }
-    // code for Mozilla, Firefox, Opera, etc.
-    else{
-        xmlString = (new XMLSerializer()).serializeToString(xmlData);
-    }
-    return xmlString;
-}   

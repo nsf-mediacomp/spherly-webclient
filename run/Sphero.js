@@ -54,6 +54,8 @@ function Sphero(url) {
 	this.then = Date.now();
 	this.COMMAND_WAIT_TIME = 50;
 	this.wait_time = this.COMMAND_WAIT_TIME;
+	this.back_led_intensity = 0;
+	this.current_colour = Utils.hexToRgb("#ffffff");
 	this.command_queue = [];
 	
 	this.stopHandler = null;
@@ -168,6 +170,35 @@ function Sphero(url) {
 		window.connection.destroyMessageCallback();
 	}
 	
+	this.beginCalibrationMode = function(){
+		//this.setRGB("#000000");
+		var c = Utils.hexToRgb("#000000");
+		var command = {"command": "setRGB", "red": c.r, "green": c.g, "blue": c.b};
+		window.connection.send(command);
+		//this.setBackLED(127);
+		var command = {"command": "setBackLED", "value": 127};
+		window.connection.send(command);
+		//this.setStabilization(false);
+		var command = {"command": "setStabilization", "flag":false};
+		window.connection.send(command);
+	}
+	
+	this.endCalibrationMode = function(){
+		//this.setHeading(0);
+		var command = {"command": "resetHeading"};
+		window.connection.send(command);
+		//this.setRGB(this.current_colour);
+		var c = this.current_colour;
+		var command = {"command": "setRGB", "red": c.r, "green": c.g, "blue": c.b};
+		window.connection.send(command);
+		//this.setStabilization(true);
+		var command = {"command": "setStabilization", "flag":true};
+		window.connection.send(command);
+		//this.setBackLED(this.back_led_intensity);
+		var command = {"command": "setBackLED", "value":this.back_led_intensity};
+		window.connection.send(command);
+	}
+	
 	//
 	//USER COMMANDS
 	//
@@ -177,6 +208,10 @@ function Sphero(url) {
 	this.turn = function(direction, blockID){
 		direction = Math.round(direction);
 		this.command_queue.push(["turn", direction, blockID]);
+	}
+	this.turnTimed = function(direction, time, blockID){
+		direction = Math.round(direction);
+		this.command_queue.push(["turnTimed", direction, time, blockID]);
 	}
 	this.setStabilization = function(flag, blockID){
 		this.command_queue.push(["setStabilization", flag, blockID]);
@@ -188,8 +223,14 @@ function Sphero(url) {
 	this.roll = function(heading, blockID){
 		this.command_queue.push(["roll", heading, blockID]);
 	}
+	this.rollTimed = function(heading, time, blockID){
+		this.command_queue.push(["roll", heading, time, blockID]);
+	}
 	this.rollForward = function(blockID) {
 		this.command_queue.push(["rollForward", blockID]);
+	}
+	this.rollForwardTimed = function(time, blockID){
+		this.command_queue.push(["rollForwardTimed", time, blockID]);
 	}
 	this.stop = function(blockID) {
 		this.command_queue.push(["stop", blockID]);
@@ -202,6 +243,10 @@ function Sphero(url) {
 	}
 	this.wait = function (seconds, blockID) {
 		this.command_queue.push(["wait", seconds, blockID]);
+	}
+	
+	this.timedCalibrate = function(time, blockID){
+		this.command_queue.push(["timedCalibrate", time, blockID]);
 	}
 	
 	this.spheroMessageCallback = function(data){
@@ -306,8 +351,6 @@ function Sphero(url) {
 		this.then = Date.now();
 		if (execute_run_handler === undefined)
 			execute_run_handler = true;
-		console.log(this.runHandler);
-		console.log(execute_run_handler);
 		if (this.runHandler !== null && execute_run_handler)
 			this.runHandler();
 		this.timeout_id = setTimeout(this.execute(), 0);
@@ -334,6 +377,7 @@ function Sphero(url) {
 						hex = hex.replace("'","");
 					}
 					var colour = Utils.hexToRgb(hex);
+					this.current_colour = colour;
 					var command = {"command": "setRGB", 
 						"red": colour.r, "green": colour.g, "blue": colour.b};
 					window.connection.send(command);
@@ -343,6 +387,17 @@ function Sphero(url) {
 					var command = {"command": "turn", "direction": direction};
 					window.connection.send(command);
 					break;
+				case "turnTimed":
+					var direction = command[1];
+					var time = command[2]; //in seconds
+					this.wait_time = time * 1000;
+					var command = {"command": "turn", "direction": direction};
+					window.connection.send(command);
+					this.timeout_id = setTimeout(function(){
+						this.execute();
+					}.bind(this), this.wait_time);
+					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
+					return; 
 				case "setStabilization":
 					var flag = command[1];
 					var command = {"command": "setStabilization", "flag":flag};
@@ -359,10 +414,34 @@ function Sphero(url) {
 					var command = {"command": "roll", "heading": heading, "speed": this.speed};
 					window.connection.send(command);
 					break;
+				case "rollTimed":
+					var heading = command[1];
+					var time = command[2]; //in seconds
+					var command = {"command": "roll", "heading": heading, "speed": this.speed};
+					window.connection.send(command);
+					this.timeout_id = setTimeout(function(){
+						var command = {"command": "stop"};
+						window.connection.send(command);
+						this.execute();
+					}.bind(this), this.wait_time);
+					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
+					return; 
 				case "rollForward":									
 					var command = {"command": "rollForward", "speed": this.speed};
 					window.connection.send(command);
 					break;
+				case "rollForwardTimed":
+					var time = command[1]; //in seconds
+					this.wait_time = time * 1000;
+					var command = {"command": "rollForward", "speed": this.speed};
+					window.connection.send(command);
+					this.timeout_id = setTimeout(function(){
+						var command = {"command": "stop"};
+						window.connection.send(command);
+						this.execute();
+					}.bind(this), this.wait_time);
+					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
+					return; 
 				case "stop":								
 					var command = {"command": "stop"};
 					window.connection.send(command);
@@ -374,6 +453,7 @@ function Sphero(url) {
 					break;
 				case "setBackLED":
 					var value = command[1];
+					this.back_led_intensity = value;
 					var command = {"command": "setBackLED", "value": value};
 					window.connection.send(command);
 					break;
@@ -384,6 +464,16 @@ function Sphero(url) {
 					this.timeout_id = setTimeout(this.execute.bind(this), this.wait_time);
 					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
 					return;
+				case "timedCalibrate":
+					var time = command[1]; //in seconds
+					this.wait_time = time * 1000;
+					this.beginCalibrationMode();
+					this.timeout_id = setTimeout(function(){
+						this.endCalibrationMode();
+						this.execute();
+					}.bind(this), this.wait_time);
+					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
+					return; 
 				//FOR AFTER THE END PROGRAM EVENT HANDLER
 				case "final_end":
 					return;

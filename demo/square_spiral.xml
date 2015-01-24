@@ -96,5 +96,4 @@
       </block>
     </statement>
   </block>
-  <block type="sphero_collision" id="23" deletable="false" x="191" y="294"></block>
 </xml>

@@ -5,4 +5,6 @@ SpheroManager.UpdateLanguageMessages = function(){
 	$("#openProjectButton").html(Blockly.Msg.OPEN_PROJECT);
 	
 	$("#saveProjectButton").html(Blockly.Msg.SAVE_PROJECT);
+	
+	$("#calibrateButton").html(Blockly.Msg.CALIBRATE);
 };

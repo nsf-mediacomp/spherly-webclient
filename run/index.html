@@ -13,6 +13,8 @@
 		<script type="text/javascript" src="msg/js/en.js"></script>
 		<script type="text/javascript" src="msg/spherly/en.js"></script>
 		<script type="text/javascript" src="runblockly.js"></script>
+		<script type="text/javascript" src="runblockly_program_execution.js"></script>
+		<script type="text/javascript" src="runblockly_utils.js"></script>
 		<script type="text/javascript" src="language.js"></script>
 		
 		<link rel="icon" type="image/ico" href="favicon.ico">
@@ -89,6 +91,13 @@
 			</value>
 		</block>
 		<block type="sphero_rollForward"></block>
+		<block type="sphero_rollForwardTimed">
+			<value name="TIME">
+				<block type="math_number">
+					<field name="NUM">1</field>
+				</block>
+			</value>
+		</block>
 		<block type="sphero_roll">
 			<value name="HEADING">
 			  <block type="math_number">
@@ -96,21 +105,40 @@
 			  </block>
 			</value>
 		</block>
-		<block type="sphero_turn">
+		<!--<block type="sphero_turn">
 			<value name="DIRECTION">
 			  <block type="math_number">
 				<field name="NUM">180</field>
 			  </block>
 			</value>
-		</block>
-		<!--This just makes the ball not able to move-->
-		<!--<block type="sphero_set_stabilization">
-			<value name="FLAG">
-			  <block type="logic_boolean">
-				<field name="BOOL">false</field>
+		</block>-->
+		<block type="sphero_turnTimed">
+			<value name="DIRECTION">
+			  <block type="math_number">
+				<field name="NUM">180</field>
 			  </block>
 			</value>
-		</block>-->
+			<value name="TIME">
+			  <block type="math_number">
+				<field name="NUM">0.5</field>
+			  </block>
+			</value>
+		</block>
+		<block type="sphero_stop"></block>
+		<block type="sphero_set_back_led">
+			<value name="BRIGHTNESS">
+			  <block type="math_number">
+				<field name="NUM">127</field>
+			  </block>
+			</value>
+		</block>
+		<block type="sphero_calibrate">
+			<value name="TIME">
+				<block type="math_number">
+					<field name="NUM">10</field>
+				</block>
+			</value>
+		</block>
 		<block type="sphero_set_speed">
 			<value name="SPEED">
 			  <block type="math_number">
@@ -118,7 +146,6 @@
 			  </block>
 			</value>
 		</block>
-		<block type="sphero_stop"></block>
 		<block type="sphero_wait">
 			<value name="TIME">
 			  <block type="math_number">
@@ -127,10 +154,6 @@
 			</value>
 		</block>
 	</category>
-	<!--<category name="Sphero Control">
-		<block type="sphero_run"></block>
-		<block type="sphero_collision"></block>
-	</category>-->
     <category name="Logic">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
