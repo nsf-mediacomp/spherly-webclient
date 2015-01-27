@@ -8,12 +8,16 @@ SpheroManager.spheroRun;
 SpheroManager.spheroCollide;
 
 window.onload = function(){
+	//in language.js
+	SpheroManager.PopulateLanguageMenu([
+		["English", "en.js"],
+		["Francais", "fr.js"]
+	]);
+	//END LANGUAGE
+	
+	
 	window.connection = new SpheroConnection(url);
 	SpheroManager.sphero = new Sphero();
-
-	BlocklyApps.LANG = 'en';
-	BlocklyApps.LANGUAGES = ["en"];
-	BlocklyApps.init();
 	
 	Blockly.JavaScript.addReservedWords('SpheroManager');
 	
@@ -59,17 +63,14 @@ window.onload = function(){
 	
 	//Set up hover messages..
 	$("#selectButton").hover(function(e){
-		openHover(e, "Display a list of Spheros. Select one from the list to get its address so that you may then <span style='font-weight:bold;color:#555555;'>Connect</span> to it.");
+		openHover(e, Blockly.Msg.SELECT_ADDRESS_HOVER);
 	}, closeHover);
 	$("#connectButton").hover(function(e){
-		openHover(e, "Attempt to connect to the Sphero specified by the address in the address box to the left.");
+		openHover(e, Blockly.Msg.CONNECT_HOVER);
 	}, closeHover);
 	$("#calibrateButton").hover(function(e){
-		openHover(e, "Sphero will enter calibration mode, where its Tail LED will light up, and you can rotate to tell Sphero which direction <span style='font-weight:bold;color:#001188;'>Forward</span> is.");
+		openHover(e, Blockly.Msg.CALIBRATE_HOVER);
 	}, closeHover);
-	
-	//in language.js
-	SpheroManager.UpdateLanguageMessages();
 }
 
 SpheroManager.example_projects = {};
@@ -293,14 +294,14 @@ SpheroManager.listDevices = function(){
 			tableStr += "<tr><td><a href='#' onclick='setAddress("+'"'+devices[i]["address"]+'"'+");'>"+devices[i]["name"]+"</href></td><td>"+devices[i]["address"]+"</td></tr>";
 		}
 		tableStr += "</table>";
-		message.html(devices.length.toString()+" devices found: <br />"+tableStr);
+		message.html(devices.length.toString()+ Blockly.Msg.DEVICES_FOUND +" <br />"+tableStr);
 		
 		button = $(document.createElement('div')).attr('id', 'dialogButton').html("Cancel");
 		button.on('click', function(e){
 			Utils.closeDialog();
 		});
 		
-		SpheroManager.alertMessage("Select Address", message, button);
+		SpheroManager.alertMessage(Blockly.Msg.SELECT_ADDRESS, message, button);
 		
 		$("#hoverMessage").css('display', 'none');
 		$("#selectButton")[0].disabled = false;
@@ -334,15 +335,6 @@ SpheroManager.sleep = function(){
 	$("#runButton")[0].disabled = true;
 	$("#stopButton")[0].disabled = true;
 	$("#sleepButton")[0].disabled = true;
-}
-
-SpheroManager.lastHeading = 0;
-SpheroManager.setHeading = function(val) {
-	var prevHeading = lastHeading;
-	lastHeading = val;
-	val = Math.abs(val - prevHeading);
-	SpheroManager.sphero.setHeading(parseInt(val*20));
-	console.log("set heading: " + val);
 }
 
 SpheroManager.loadBlocks = function(defaultXml){
@@ -384,6 +376,7 @@ SpheroManager.calibrate = function(){
 		$("#calibrateButton")[0].onclick = function(){ 
 			tryTo(SpheroManager.calibrate)
 		};
+		$("#calibrateButton").html(Blockly.Msg.CALIBRATE);
 		SpheroManager.sphero.endCalibrationMode();
 		Utils.closeDialog();
 	};
@@ -391,5 +384,6 @@ SpheroManager.calibrate = function(){
 	
 	button.on('click', endCalibration);
 	$("#calibrateButton")[0].onclick = endCalibration;
+	$("#calibrateButton").html(Blockly.Msg.END_CALIBRATE);
 	$("#closeDialogButton").on("click", endCalibration);
 };

@@ -1,16 +1,16 @@
 'use strict';
 
-goog.provide('Blockly.Msg.en');
+goog.provide('Blockly.Msg.fr');
 
 goog.require('Blockly.Msg');
 
 //---------------------------------------------------------------------
 //------------------------ SPHERO UI MESSAGES--------------------------
 //---------------------------------------------------------------------
-Blockly.Msg.SPHERLY_TITLE = "Spherly: Program Your Sphero";
-Blockly.Msg.LANGUAGE = "Language";
+Blockly.Msg.SPHERLY_TITLE = "Spherly: Programmer votre Sphéro";
+Blockly.Msg.LANGUAGE = "Langue";
 
-Blockly.Msg.OPEN_PROJECT = "Open Project";
+Blockly.Msg.OPEN_PROJECT = "Ouvrir un projet";
 Blockly.Msg.SELECT_XML_FILE = "Select XML File: ";
 Blockly.Msg.CHOOSE_EXAMPLE = "Or choose example project: ";
 Blockly.Msg.LOAD_PROJECT = "Load Project";
@@ -22,15 +22,15 @@ Blockly.Msg.EXAMPLE_COLOR_CYCLE = "Color Cycle";
 Blockly.Msg.EXAMPLE_ROLL_SQUARE = "Roll in a Square";
 Blockly.Msg.EXAMPLE_ROLL_SQUARE_SPIRAL = "Roll in a Square (Spiral)";
 
-Blockly.Msg.SAVE_PROJECT = "Save Project";
+Blockly.Msg.SAVE_PROJECT = "Enregistrer le projet";
 Blockly.Msg.SAVE_PROJECT_DOWNLOAD_BLOCKS = "Save Project / Download Blocks";
 Blockly.Msg.FILENAME = "Filename: ";
 Blockly.Msg.SPHEROPROJECT_XML = "SpheroProject.xml";
 
-Blockly.Msg.CONNECT = "Connect";
+Blockly.Msg.CONNECT = "Relier";
 Blockly.Msg.CONNECT_HOVER = "Attempt to connect to the Sphero specified by the address in the address box to the left.";
-Blockly.Msg.DISCONNECT = "Disconnect";
-Blockly.Msg.SLEEP = "Sleep";
+Blockly.Msg.DISCONNECT = "Couper";
+Blockly.Msg.SLEEP = "Sommeil";
 Blockly.Msg.ATTEMPTING_CONNECTION = function(spheroAddress){
 	return "attempting connection with sphero<br/>at address: "+spheroAddress;
 };
@@ -44,31 +44,31 @@ Blockly.Msg.SEARCHING_FOR_DEVICES = "searching for devices";
 Blockly.Msg.DEVICES_FOUND = "devices found:";
 Blockly.Msg.CANCEL = "Cancel";
 Blockly.Msg.OK = "OK";
-Blockly.Msg.SELECT_ADDRESS = "Select Address";
+Blockly.Msg.SELECT_ADDRESS = "Sélectionnez Adresse";
 Blockly.Msg.SELECT_ADDRESS_HOVER = "Display a list of Spheros. Select one from the list to get its address so that you may then <span style='font-weight:bold;color:#555555;'>Connect</span> to it.";
 Blockly.Msg.ERROR = "Error";
 
-Blockly.Msg.CALIBRATE = "Calibrate";
+Blockly.Msg.CALIBRATE = "Étalonner";
 Blockly.Msg.CALIBRATE_HOVER = "Sphero will enter calibration mode, where its Tail LED will light up, and you can rotate to tell Sphero which direction <span style='font-weight:bold;color:#001188;'>Forward</span> is.";
 Blockly.Msg.CALIBRATE_MESSAGE = "Rotate the Sphero to calibrate it.<br/>The direction of the blue LED is the opposite of what Sphero considers <span style='font-weight:bold;color:#001188;'>Forward</span>.";
 Blockly.Msg.END_CALIBRATE = "End Calibration";
 
-Blockly.Msg.RUN_PROGRAM = "Run Program";
-Blockly.Msg.RESET_PROGRAM = "Reset Program";
-Blockly.Msg.STOP = "Stop";
+Blockly.Msg.RUN_PROGRAM = "Exécuter le programme";
+Blockly.Msg.RESET_PROGRAM = "Réinitialiser Programme";
+Blockly.Msg.STOP = "Arrêtez";
 
 //---------------------------------------------------------------------
 //------------------------BLOCK TOOLBOX TITLES-------------------------
 //---------------------------------------------------------------------
-Blockly.Msg.SPHERO_EVENTS = "Sphero Events";
-Blockly.Msg.SPHERO_COMMANDS = "Sphero Commands";
-Blockly.Msg.LOGIC = "Logic";
+Blockly.Msg.SPHERO_EVENTS = "Sphéro Evénements";
+Blockly.Msg.SPHERO_COMMANDS = "Commandes Sphéro";
+Blockly.Msg.LOGIC = "Logique";
 Blockly.Msg.LOOPS = "Loops";
 Blockly.Msg.MATH = "Math";
-Blockly.Msg.LISTS = "Lists";
-Blockly.Msg.COLOUR = "Colour";
+Blockly.Msg.LISTS = "Listes";
+Blockly.Msg.COLOUR = "Couleur";
 Blockly.Msg.VARIABLES = "Variables";
-Blockly.Msg.FUNCTIONS = "Functions";
+Blockly.Msg.FUNCTIONS = "Fonctions";
 
 //---------------------------------------------------------------------
 //------------------------ SPHERO BLOCK MESSAGES-----------------------
@@ -77,7 +77,7 @@ Blockly.Msg.SPHERO_GOSPHERO_URL = "http://www.gosphero.com";
 Blockly.Msg.SPHERO_API_HELPURL = 'http://orbotixinc.github.io/Sphero-Docs/docs/sphero-api/bootloader-and-sphero.html';
 Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_settimeout.asp';
 
-Blockly.Msg.SPHERO_RUN_TITLE = "When Run Program clicked";
+Blockly.Msg.SPHERO_RUN_TITLE = "Lorsque Run Programme Clicked";
 Blockly.Msg.SPHERO_RUN_TOOLTIP = "The block that contains what code to execute when the run program button is pressed.";
 Blockly.Msg.SPHERO_EVENT_COLLISION = "When Sphero runs into something";
 Blockly.Msg.SPHERO_EVENT_STOP = "When Stop Button clicked";

@@ -8,14 +8,15 @@
 		<script type="text/javascript" src="blockly/blockly_compressed.js"></script>
 		<script type="text/javascript" src="blockly/javascript_compressed.js"></script>
 		<script type="text/javascript" src="blockly/blocks_compressed.js"></script>
-		<script type="text/javascript" src="blockly/apps/common.js"></script>
 		<script type="text/javascript" src="sphero_blocks.js"></script>
+		<!--default to english language-->
 		<script type="text/javascript" src="msg/js/en.js"></script>
 		<script type="text/javascript" src="msg/spherly/en.js"></script>
+		<!--end language script srcs-->
 		<script type="text/javascript" src="runblockly.js"></script>
+		<script type="text/javascript" src="language.js"></script>
 		<script type="text/javascript" src="runblockly_program_execution.js"></script>
 		<script type="text/javascript" src="runblockly_utils.js"></script>
-		<script type="text/javascript" src="language.js"></script>
 		
 		<link rel="icon" type="image/ico" href="favicon.ico">
 		<link rel="stylesheet" type="text/css" href="style.css">
@@ -53,7 +54,7 @@
 		</div>
 		<div align="right">
 			<div id="languageMenuContainer">
-				Language:
+				<span id="languageTitle">Language:</span>
 				<select id="languageMenu">
 				</select>
 			</div>

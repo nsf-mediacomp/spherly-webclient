@@ -1,12 +1,15 @@
-SpheroManager.run = function() {
-	$("#runButton").html("&nbsp;Reset Program ");
-	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.resetProgram);}
+SpheroManager.reset_program_text = false;
 
-	var message = $(document.createElement('div')).html("Sphero is not connected.");
-	var button = $(document.createElement('div')).attr('id', 'dialogButton').html("OK");
+SpheroManager.run = function() {
+	$("#runButton").html("&nbsp; "+Blockly.Msg.RESET_PROGRAM);
+	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.resetProgram);}
+	SpheroManager.reset_program_text = true;
+
+	var message = $(document.createElement('div')).html(Blockly.Msg.NOT_CONNECTED_MESSAGE);
+	var button = $(document.createElement('div')).attr('id', 'dialogButton').html(Blockly.Msg.OK);
 	button.on('click', function(e){ Utils.closeDialog(); });
 	if (SpheroManager.sphero == null || !SpheroManager.sphero.isConnected) {
-		SpheroManager.alertMessage("Not Connected", message, button);
+		SpheroManager.alertMessage(Blockly.Msg.NOT_CONNECTED, message, button);
 		return;
 	}
 
@@ -31,13 +34,16 @@ SpheroManager.evalCode = function(){
 		if (e !== "Infinity"){
 			var e = $(document.createTextNode(e));
 			console.log(jscode);
-			SpheroManager.alertMessage("Error", e, button);
+			var button = $(document.createElement('div')).attr('id', 'dialogButton').html(Blockly.Msg.OK);
+			button.on('click', function(e){ Utils.closeDialog(); });
+			SpheroManager.alertMessage(Blockly.Msg.ERROR, e, button);
 		}
 	}
 }
 
 SpheroManager.resetProgram = function(){
-	$("#runButton").html("&#9654; Run Program");
+	SpheroManager.reset_program_text = false;
+	$("#runButton").html("&#9654;"+Blockly.Msg.RUN_PROGRAM);
 	$("#runButton")[0].onclick = function(){tryTo(SpheroManager.run);}
 	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.sphero.clearAllCommands();
