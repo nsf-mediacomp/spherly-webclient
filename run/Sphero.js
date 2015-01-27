@@ -171,31 +171,12 @@ function Sphero(url) {
 	}
 	
 	this.beginCalibrationMode = function(){
-		//this.setRGB("#000000");
-		var c = Utils.hexToRgb("#000000");
-		var command = {"command": "setRGB", "red": c.r, "green": c.g, "blue": c.b};
-		window.connection.send(command);
-		//this.setBackLED(127);
-		var command = {"command": "setBackLED", "value": 127};
-		window.connection.send(command);
-		//this.setStabilization(false);
-		var command = {"command": "setStabilization", "flag":false};
+		var command = {"command": "calibrateOn"};
 		window.connection.send(command);
 	}
 	
 	this.endCalibrationMode = function(){
-		//this.setHeading(0);
-		var command = {"command": "resetHeading"};
-		window.connection.send(command);
-		//this.setRGB(this.current_colour);
-		var c = this.current_colour;
-		var command = {"command": "setRGB", "red": c.r, "green": c.g, "blue": c.b};
-		window.connection.send(command);
-		//this.setStabilization(true);
-		var command = {"command": "setStabilization", "flag":true};
-		window.connection.send(command);
-		//this.setBackLED(this.back_led_intensity);
-		var command = {"command": "setBackLED", "value":this.back_led_intensity};
+		var command = {"command": "calibrateOff"};
 		window.connection.send(command);
 	}
 	

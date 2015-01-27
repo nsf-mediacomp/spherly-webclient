@@ -23,7 +23,6 @@ window.onload = function(){
 		'</xml>';
 	SpheroManager.loadBlocks(defaultXml);
 	
-	$("#closeDialogButton").on("click", Utils.closeDialog);
 	/*$("#codeButton").on("click", function(){
 		var generated_code = Blockly.JavaScript.workspaceToCode();
 			generated_code += "if (pixly_run) pixly_run();\n";
@@ -189,6 +188,8 @@ SpheroManager.alertMessage = function(title, message, button){
 	$("#dialog").css("display", "block");
 	$("#dialog").width(500);
 	$("#dialog").height(300);
+	$("#closeDialogButton").off('click');
+	$("#closeDialogButton").on("click", Utils.closeDialog);
 	
 	//TODO (not good with two button?)
 	window.onkeydown = function(e){
@@ -377,9 +378,17 @@ SpheroManager.calibrate = function(){
 	
 	var message = $(document.createElement('div')).html(Blockly.Msg.CALIBRATE_MESSAGE);
 	var button = $(document.createElement('div')).attr('id', 'dialogButton').width(200).html(Blockly.Msg.END_CALIBRATE);
-	button.on('click', function(e){
+	
+	var endCalibration = function(e){
+		$("#calibrateButton")[0].onclick = function(){ 
+			tryTo(SpheroManager.calibrate)
+		};
 		SpheroManager.sphero.endCalibrationMode();
 		Utils.closeDialog();
-	});
+	};
 	SpheroManager.alertMessage("Calibrate Sphero", message, button);
+	
+	button.on('click', endCalibration);
+	$("#calibrateButton")[0].onclick = endCalibration;
+	$("#closeDialogButton").on("click", endCalibration);
 };

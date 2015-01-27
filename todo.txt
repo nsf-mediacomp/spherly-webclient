@@ -6,10 +6,12 @@ TEST:
 	2. Support of more than one Sphero to illustrate the collaboration between robots 
 	
 HTML
+	0. there's a problem with the heading variable getting misaligned at some point
 	1. MAKE MAC OSX JAR AND REMOVE GOOGLE DRIVE LINKS IN README (just link to releases)
 		-and make new release with the new server jars, and new webclient release
 	0. collision sensitivity slider
 	2. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
+	3. favicon??
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
 	1. Revise the Manual
