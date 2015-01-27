@@ -98,6 +98,7 @@ SpheroManager.openProject = function(){
 	var example_select = $(document.createElement("select"));
 	var options_array = [
 		["", ""],
+		[Blockly.Msg.EXAMPLE_TURNING, "turning"],
 		[Blockly.Msg.EXAMPLE_ABOUT_FACE, "about_face"],
 		[Blockly.Msg.EXAMPLE_ABOUT_FACE_COLLISION, "about_face_collision"],
 		[Blockly.Msg.EXAMPLE_CALIBRATE, "calibrate_demo"],

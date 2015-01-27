@@ -192,6 +192,7 @@ function Sphero(url) {
 	}
 	this.turnTimed = function(direction, time, blockID){
 		direction = Math.round(direction);
+		time = Math.round(time);
 		this.command_queue.push(["turnTimed", direction, time, blockID]);
 	}
 	this.setStabilization = function(flag, blockID){
@@ -386,11 +387,16 @@ function Sphero(url) {
 					var direction = command[1];
 					var time = command[2]; //in seconds
 					this.wait_time = time * 1000;
-					var command = {"command": "turn", "direction": direction};
-					window.connection.send(command);
-					this.timeout_id = setTimeout(function(){
-						this.execute();
-					}.bind(this), this.wait_time);
+					wait_time_half = Math.round(this.wait_time / 2);
+					this.wait_time = wait_time_half;
+					this.timeout_id = setTimeout(function(dir, wait){
+						var command = {"command": "turn", "direction": dir};
+						window.connection.send(command);
+						this.wait_time = wait;
+						this.timeout_id = setTimeout(function(){
+							this.execute();
+						}.bind(this), this.wait_time);
+					}.bind(this, direction, wait_time_half), wait_time_half);
 					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
 					return; 
 				case "setStabilization":
