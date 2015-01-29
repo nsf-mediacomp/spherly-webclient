@@ -8,7 +8,6 @@ TEST:
 HTML
 	1. MAKE MAC OSX JAR AND REMOVE GOOGLE DRIVE LINKS IN README (just link to releases)
 		-and make new release with the new server jars, and new webclient release
-	2. make all messages (in run blockly and console.log and server) dependent on Blockly.msg (so easily translatable)
 	3. favicon??
 	0. collision sensitivity slider
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
