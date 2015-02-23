@@ -93,13 +93,13 @@ function Sphero(url) {
 	};
 	this.powerNotificationHandler = function(){
 		var button = "<div id='dialogButton' onclick='Utils.closeDialog();'>OK</div>";
-		if (!this.got_power_notification){
-			SpheroManager.alertMessage("Sphero Off", "Cannot communicate with Sphero.<br/><br/>It may have shut off due to inactivity, lack of battery charge, or may simply be out of range.", button);
+		/*if (!this.got_power_notification){
+			SpheroManager.alertMessage("Sphero Off", "Cannot communicate with Sphero.<br/><br/>It may have shut off due to inactivity, lack of battery charge, or may simply be out of range.<br/><br/>Attempting Reconnection.", button);
 			SpheroManager.disconnect();			
 			this.stopPowerNotifications();
-		}else{
+		}else{*/
 			this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
-		}
+		//}
 		this.got_power_notification = false;
 	};
 	
