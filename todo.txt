@@ -6,9 +6,6 @@ TEST:
 	2. Support of more than one Sphero to illustrate the collaboration between robots 
 	
 HTML
-	1. MAKE MAC OSX JAR AND REMOVE GOOGLE DRIVE LINKS IN README (just link to releases)
-		-and make new release with the new server jars, and new webclient release
-	3. favicon??
 	0. collision sensitivity slider
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
@@ -16,7 +13,8 @@ HTML
 	3. add an "offline version" that demonstrates the sphero action when not connected to a sphero
 	
 SERVER
-	0. server needs to disconnect from sphero when disconnected from web client
+	0. Server disconnects from Sphero when searching for bluetooth devices on machine?? (test this by searching for bluetooth device adn connecting to phone)
+	1. server needs to disconnect from sphero when disconnected from web client`
 		(consistently, sometimes does sometimes doesn't)
 		
 	----------------------------
@@ -33,13 +31,6 @@ SERVER
 		at java.lang.Thread.run(Unknown Source)
 		
 	----------------------------
-	end listening...
-	java.lang.NullPointerException
-		at org.java_websocket.SocketChannelIOHelper.batch(SocketChannelIOHelper.java:63)
-		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:352)
-		at java.lang.Thread.run(Unknown Source
-
-	-------------------
 		
 	Stop Rolling
 	java.io.IOException: Stream closed

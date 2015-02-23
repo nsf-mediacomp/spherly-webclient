@@ -130,10 +130,10 @@ function Sphero(url) {
 			self.speed = 255;
 			callback(self.isConnected);
 			window.connection.setMessageCallback(self.spheroMessageCallback.bind(self));
+			
+			this.got_power_notification = true;
+			this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
 		});
-		this.got_power_notification = true;
-		
-		this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
 	}
 	this.cancelConnection = function(){
 		var command = {"command": "cancelConnection"};
@@ -142,6 +142,7 @@ function Sphero(url) {
 			data = JSON.parse(data);
 			console.log(data);
 		});
+		this.stopPowerNotifications();
 	}
 	
 	this.connectionReset = function(){
