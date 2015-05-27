@@ -1,12 +1,11 @@
-<h1>
-NOTE: Spherly Webclient has been merged with the <a
-href="https://github.com/jakeonaut/spherly-server-java">Spherly Server
-project!!</a><br>
-Can now be found in the SpherlyServer/assets/www/ folder of the <a
-href="https://github.com/jakeonaut/spherly-server-java">Spherly Server project</a>
-<br><br>
-As a result, this project is deprecated.
-</h1>
+#NOTE: Spherly Webclient has been merged with the Spherly Server
+project!!
+##It can now be found in the SpherlyServer/assets/www/ folder of the Spherly
+Server project:
+##https://github.com/jakeonaut/spherly-server-java
+
+###As a result, this project is deprecated.
+
 
 Webclient code for Spherly. Built on Blockly: https://developers.google.com/blockly/
 
