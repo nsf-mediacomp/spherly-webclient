@@ -1,5 +1,8 @@
 function SpheroManager(){};
-SpheroManager.sphero = null;
+SpheroManager.sphero;
+SpheroManager.sphero_array = [];
+SpheroManager.sphero_index = 0;
+
 var url = "ws://localhost:8080/sphero";
 var offX;
 var offY;
@@ -17,14 +20,24 @@ window.onload = function(){
 	
 	
 	window.connection = new SpheroConnection(url);
-	SpheroManager.sphero = new Sphero();
+	SpheroManager.sphero_array = [new Sphero(0)];
+	SpheroManager.sphero = SpheroManager.sphero_array[SpheroManager.sphero_index];
 	
 	Blockly.JavaScript.addReservedWords('SpheroManager');
+	Blockly.JavaScript.addReservedWords('window');
+	Blockly.JavaScript.addReservedWords('Sphero');
+	Blockly.JavaScript.addReservedWords('SpheroConnection');
 	
 	var defaultXml = 
 		'<xml>' +
-		'	<block type="sphero_run" x="260" y="70"></block>' +
-		'</xml>';
+		'	<block type="sphero_run" id="6" inline="false" x="260" y="70">' +
+		'		<value name="SPHERO">' + 
+		'			<block type="math_number" id="7">' +
+		'				<field name="NUM">1</field>' + 
+		'			</block>' +
+		'		</value>' +
+		'	</block>' +
+		'</xml>';	
 	SpheroManager.loadBlocks(defaultXml);
 	
 	/*$("#codeButton").on("click", function(){
@@ -71,6 +84,42 @@ window.onload = function(){
 	$("#calibrateButton").hover(function(e){
 		openHover(e, Blockly.Msg.CALIBRATE_HOVER);
 	}, closeHover);
+	
+	//Setup sphero connection drop down manager
+	$("#spheroNumber").on('change', function(e){
+		var max_length = 10;
+		if ($(this)[0].selectedIndex == -1) return;
+		var options = $(this)[0].options;
+		var index = $(this)[0].selectedIndex;
+		
+		//Add another!
+		if (index === options.length-1 && options.length-1 <= max_length){
+			SpheroManager.sphero_array.push(new Sphero(index));
+			$(this).html('');
+			for (var i = 0; i < SpheroManager.sphero_array.length; i++){
+				$(this).append($("<option/>", {
+					value: '' + (i + 1),
+					text: '' + (i + 1)
+				}));
+			}
+			if (options.length !== max_length){
+				$(this).append($("<option/>", {
+					value: '',
+					text: "++"
+				}));
+				//now select the newly added!
+				$(this)[0].selectedIndex = options.length-2;
+			}else{
+				$(this)[0].selectedIndex = options.length-1;
+			}
+		}
+		
+		//Now need to update the display and internal variables
+		var value = options[$(this)[0].selectedIndex].value;
+		SpheroManager.sphero_index = parseInt(value) - 1;	//since options do 1 counting
+		SpheroManager.sphero = SpheroManager.sphero_array[SpheroManager.sphero_index];
+		alert("Need to change Connect/Disconnect/Etc buttons to reflect sphero status: " + value);
+	});
 }
 
 SpheroManager.example_projects = {};
@@ -116,7 +165,7 @@ SpheroManager.openProject = function(){
 	example_select.on('change', function(e){
 		var value = $(example_select).val();
 		if (value in SpheroManager.example_projects){
-			$(textarea).html(example_projects[value]);
+			$(textarea).html(SpheroManager.example_projects[value]);
 		}else{
 			$.get("../demo/"+value+".xml", function(data){
 				data = Utils.xmlToString(data);

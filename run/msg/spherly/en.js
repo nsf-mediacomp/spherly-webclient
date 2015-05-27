@@ -7,6 +7,7 @@ goog.require('Blockly.Msg');
 //---------------------------------------------------------------------
 //------------------------ SPHERO UI MESSAGES--------------------------
 //---------------------------------------------------------------------
+Blockly.Msg.SPHERO = "sphero";
 Blockly.Msg.SPHERLY_TITLE = "Spherly: Program Your Sphero";
 Blockly.Msg.LANGUAGE = "Language";
 
@@ -78,8 +79,10 @@ Blockly.Msg.SPHERO_API_HELPURL = 'http://orbotixinc.github.io/Sphero-Docs/docs/s
 Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_settimeout.asp';
 
 Blockly.Msg.SPHERO_RUN_TITLE = "When Run Program clicked";
+Blockly.Msg.SPHERO_RUN_TELL_TITLE = "tell sphero #";
+Blockly.Msg.TO = 'to';
 Blockly.Msg.SPHERO_RUN_TOOLTIP = "The block that contains what code to execute when the run program button is pressed.";
-Blockly.Msg.SPHERO_EVENT_COLLISION = "When Sphero runs into something";
+Blockly.Msg.SPHERO_EVENT_COLLISION = "When Collision Detected";
 Blockly.Msg.SPHERO_EVENT_STOP = "When Stop Button clicked";
 Blockly.Msg.SPHERO_EVENT_END = "When Sphero program finishes";
 Blockly.Msg.SPHERO_EVENT_TOOLTIP = "Blocks here will be run when the specified event occurs.";
@@ -95,7 +98,7 @@ Blockly.Msg.SPHERO_CALIBRATECOMMAND_TITLE = "calibrate sphero for";
 Blockly.Msg.SPHERO_CALIBRATECOMMAND_TOOLTIP = "Sphero will enter calibration mode for the specified number of seconds to allow the user to point it in the desired direction.";
 Blockly.Msg.SPHERO_ROLL_TITLE = 'sphero roll in direction';
 Blockly.Msg.SPHERO_ROLL_TOOLTIP = "Tell the Sphero to roll in a given direction. The direction is a degree position from 0 to 359 degrees, and is relative to the last calibrated direction (controlled by the robot, not by the TURN command).";
-Blockly.Msg.SPHERO_ROLLFORWARD_TITLE = 'sphero roll forward';
+Blockly.Msg.SPHERO_ROLLFORWARD_TITLE = 'roll forward';
 Blockly.Msg.SPHERO_ROLLFORWARD_TOOLTIP = "Tell the Sphero to roll forward. It will roll in the direction of its most recently set direction, at its most recently set speed. Default speed is 200 cm/s";
 Blockly.Msg.SPHERO_TURN_TITLE = 'sphero turn';
 Blockly.Msg.SPHERO_TURN_TITLE_2 = "degrees for";

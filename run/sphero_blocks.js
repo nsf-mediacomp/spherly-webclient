@@ -13,6 +13,10 @@ Blockly.Blocks['sphero_run'] = {
     this.setColour(210);
     this.appendDummyInput()
         .appendField(Blockly.Msg.SPHERO_RUN_TITLE);
+	this.appendValueInput("SPHERO")
+		.appendField(Blockly.Msg.SPHERO_RUN_TELL_TITLE)
+		.setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT);
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
     this.setPreviousStatement(false);
@@ -24,7 +28,9 @@ Blockly.Blocks['sphero_run'] = {
 Blockly.JavaScript['sphero_run'] = function(block) {
   // ONly run the code that is inside this block when run button is pressed (like a main)
   var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
-  var code = 'SpheroManager.sphero.attachEventHandler("RUN", function(){\n' + 
+  var sphero_num = Blockly.JavaScript.valueToCode(block, 'SPHERO', Blockly.JavaScript.ORDER_NONE) || '1';
+  sphero_num = parseInt(sphero_num) - 1;
+  var code = 'sphero' + sphero_num + '.attachEventHandler("RUN", function(){\n' + 
       do_branch +
 	  '\n});\n';
   return code;
@@ -36,6 +42,10 @@ Blockly.Blocks['sphero_collision'] = {
 		this.setColour(210);
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.SPHERO_EVENT_COLLISION);
+		this.appendValueInput("SPHERO")
+			.appendField(Blockly.Msg.SPHERO_RUN_TELL_TITLE)
+			.setCheck("Number")
+			.setAlign(Blockly.ALIGN_RIGHT);
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
 		this.setPreviousStatement(false);
@@ -47,8 +57,10 @@ Blockly.Blocks['sphero_collision'] = {
 
 Blockly.JavaScript['sphero_collision'] = function(block){
 	var event = block.getFieldValue('EVENT');
+	var sphero_num = Blockly.JavaScript.valueToCode(block, 'SPHERO', Blockly.JavaScript.ORDER_NONE) || '1';
+	sphero_num = parseInt(sphero_num) - 1;
 	var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
-	var code = 'SpheroManager.sphero.attachEventHandler("COLLISION", function(){' +
+	var code = 'sphero'+sphero_num+'.attachEventHandler("COLLISION", function(){' +
 					do_branch +
 				'\n});\n';
 	return code;
@@ -64,6 +76,10 @@ Blockly.Blocks['sphero_event'] = {
 				[Blockly.Msg.SPHERO_EVENT_STOP, 'STOP']
 				//[Blockly.Msg.SPHERO_EVENT_END, 'END']
 			]), "EVENT");
+		this.appendValueInput("SPHERO")
+			.appendField(Blockly.Msg.SPHERO_RUN_TELL_TITLE)
+			.setCheck("Number")
+			.setAlign(Blockly.ALIGN_RIGHT);
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
 		this.setPreviousStatement(false);
@@ -75,8 +91,10 @@ Blockly.Blocks['sphero_event'] = {
 
 Blockly.JavaScript['sphero_event'] = function(block){
 	var event = block.getFieldValue('EVENT');
+	var sphero_num = Blockly.JavaScript.valueToCode(block, 'SPHERO', Blockly.JavaScript.ORDER_NONE) || '1';
+	sphero_num = parseInt(sphero_num) - 1;
 	var do_branch = Blockly.JavaScript.statementToCode(block, 'DO');
-	var code = 'SpheroManager.sphero.attachEventHandler("'+event+'", function(){' +
+	var code = 'sphero'+sphero_num+'.attachEventHandler("'+event+'", function(){' +
 					do_branch +
 				'\n});\n';
 	return code;
@@ -98,7 +116,7 @@ Blockly.Blocks['sphero_set_back_led'] = {
 
 Blockly.JavaScript['sphero_set_back_led'] = function(block){
 	var brightness = Blockly.JavaScript.valueToCode(block, 'BRIGHTNESS', Blockly.JavaScript.ORDER_NONE) || 0;
-	var code = "SpheroManager.sphero.setBackLED(" + brightness + ", "+ block.id +");\n";
+	var code = "this.setBackLED(" + brightness + ", "+ block.id +");\n";
 	return code;	
 };
 
@@ -118,7 +136,7 @@ Blockly.Blocks['sphero_calibrate'] = {
 
 Blockly.JavaScript['sphero_calibrate'] = function(block){
 	var time = Blockly.JavaScript.valueToCode(block, "TIME", Blockly.JavaScript.ORDER_NONE) || 0;
-	var code = "SpheroManager.sphero.timedCalibrate(" + time + ", " + block.id + ");\n";
+	var code = "this.timedCalibrate(" + time + ", " + block.id + ");\n";
 	return code;
 }
 
@@ -138,7 +156,7 @@ Blockly.Blocks['sphero_set_rgb'] = {
 
 Blockly.JavaScript['sphero_set_rgb'] = function(block) {
 	var hex = Blockly.JavaScript.valueToCode(block, 'COLOUR', Blockly.JavaScript.ORDER_NONE) || '#ffffff';
-	var code = "SpheroManager.sphero.setRGB(" + hex + ", "+ block.id +");\n";
+	var code = "this.setRGB(" + hex + ", "+ block.id +");\n";
 	return code;
 }
 
@@ -158,7 +176,7 @@ Blockly.Blocks['sphero_roll'] = {
 
 Blockly.JavaScript['sphero_roll'] = function(block){
 	var heading = Blockly.JavaScript.valueToCode(block, 'HEADING', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.roll("+heading+", "+ block.id +");\n";
+	var code = "this.roll("+heading+", "+ block.id +");\n";
 	return code;
 }
 
@@ -174,7 +192,7 @@ Blockly.Blocks['sphero_rollForward'] = {
 }
 
 Blockly.JavaScript['sphero_rollForward'] = function(block) {
-	var code = "SpheroManager.sphero.rollForward("+ block.id +");\n";
+	var code = "this.rollForward("+ block.id +");\n";
 	return code;
 }
 
@@ -194,7 +212,7 @@ Blockly.Blocks['sphero_rollForwardTimed'] = {
 
 Blockly.JavaScript['sphero_rollForwardTimed'] = function(block) {
 	var time = Blockly.JavaScript.valueToCode(block, "TIME", Blockly.JavaScript.ORDER_NONE) || 0;
-	var code = "SpheroManager.sphero.rollForwardTimed(" + time + ", " + block.id +");\n";
+	var code = "this.rollForwardTimed(" + time + ", " + block.id +");\n";
 	return code;
 }
 
@@ -214,7 +232,7 @@ Blockly.Blocks['sphero_turn'] = {
 
 Blockly.JavaScript['sphero_turn'] = function(block) {
 	var direction = Blockly.JavaScript.valueToCode(block, 'DIRECTION', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.turn("+direction+", "+ block.id +");\n";
+	var code = "this.turn("+direction+", "+ block.id +");\n";
 	return code;
 }
 
@@ -237,7 +255,7 @@ Blockly.Blocks['sphero_turnTimed'] = {
 Blockly.JavaScript['sphero_turnTimed'] = function(block) {
 	var direction = Blockly.JavaScript.valueToCode(block, 'DIRECTION', Blockly.JavaScript.ORDER_NONE);
 	var time = Blockly.JavaScript.valueToCode(block, 'TIME', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.turnTimed("+direction+", "+ time + ", " + block.id +");\n";
+	var code = "this.turnTimed("+direction+", "+ time + ", " + block.id +");\n";
 	return code;
 }
 
@@ -256,7 +274,7 @@ Blockly.Blocks['sphero_set_stabilization'] = {
 
 Blockly.JavaScript['sphero_set_stabilization'] = function(block) {
 	var flag = Blockly.JavaScript.valueToCode(block, 'FLAG', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.setStabilization("+flag+", "+ block.id +");\n";
+	var code = "this.setStabilization("+flag+", "+ block.id +");\n";
 	return code;
 }
 
@@ -276,7 +294,7 @@ Blockly.Blocks['sphero_set_speed'] = {
 
 Blockly.JavaScript['sphero_set_speed'] = function(block) {
 	var speed = Blockly.JavaScript.valueToCode(block, 'SPEED', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.setSpeed("+speed+", "+ block.id +");\n";
+	var code = "this.setSpeed("+speed+", "+ block.id +");\n";
 	return code;
 }
 
@@ -292,7 +310,7 @@ Blockly.Blocks['sphero_stop'] = {
 }
 
 Blockly.JavaScript['sphero_stop'] = function(block) {
-	var code = "SpheroManager.sphero.stop("+ block.id +");\n";
+	var code = "this.stop("+ block.id +");\n";
 	return code;
 }
 
@@ -315,7 +333,7 @@ Blockly.Blocks['sphero_wait'] = {
 
 Blockly.JavaScript['sphero_wait'] = function(block) {
 	var seconds = Blockly.JavaScript.valueToCode(block, 'TIME', Blockly.JavaScript.ORDER_NONE);
-	var code = "SpheroManager.sphero.wait(" + seconds+", "+ block.id +");\n";
+	var code = "this.wait(" + seconds+", "+ block.id +");\n";
 	/*var code = "var e = new Date().getTime() + ("+seconds+" * 1000);\n while (new Date().getTime() <= e) {}\n";*/
 	return code;
 }

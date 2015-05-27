@@ -7,6 +7,7 @@ goog.require('Blockly.Msg');
 //---------------------------------------------------------------------
 //------------------------ SPHERO UI MESSAGES--------------------------
 //---------------------------------------------------------------------
+Blockly.Msg.SPHERO = "sphero";
 Blockly.Msg.SPHERLY_TITLE = "Spherly: Programmer votre Sphero";
 Blockly.Msg.LANGUAGE = "Langue";
 
@@ -78,6 +79,8 @@ Blockly.Msg.SPHERO_API_HELPURL = 'http://orbotixinc.github.io/Sphero-Docs/docs/s
 Blockly.Msg.SPHERO_WAIT_HELPURL = 'http://www.w3schools.com/jsref/met_win_settimeout.asp';
 
 Blockly.Msg.SPHERO_RUN_TITLE = "Lorsque Programme s'exécute";
+Blockly.Msg.SPHERO_RUN_TELL_TITLE = "dire Sphero";
+Blockly.Msg.TO = 'de se';
 Blockly.Msg.SPHERO_RUN_TOOLTIP = "Le bloc qui va contenir le code à exécuter lorsque the bouton Exécuter Programme est appuyé.";
 Blockly.Msg.SPHERO_EVENT_COLLISION = "Lorsque Sphero heurte quelque chose";
 Blockly.Msg.SPHERO_EVENT_STOP = "Lorsque Programme s'arrête";
@@ -95,7 +98,7 @@ Blockly.Msg.SPHERO_CALIBRATECOMMAND_TITLE = "calibrer Sphero pour";
 Blockly.Msg.SPHERO_CALIBRATECOMMAND_TOOLTIP = "Sphero va entrer en mode calibrage pendant le nombre de secondes spécifié pour permettre à l'utilisateur d'orienter Sphero dans la direction souhaitée.";
 Blockly.Msg.SPHERO_ROLL_TITLE = 'Sphero roule dans la direction';
 Blockly.Msg.SPHERO_ROLL_TOOLTIP = "Dire à Sphero de rouler dans la direction donnée. La direction est une position en degré allant de 0 à 359 degrés, et est relative à la dernière direction calibrée dans Sphero (contrôlé par le robot et non par la commande TOURNER).";
-Blockly.Msg.SPHERO_ROLLFORWARD_TITLE = 'Sphero roule en avant';
+Blockly.Msg.SPHERO_ROLLFORWARD_TITLE = 'roule en avant';
 Blockly.Msg.SPHERO_ROLLFORWARD_TOOLTIP = "Dire à Sphero de rouler en avant. Il roulera dans la direction et à la vitesse récemment défini. La vitesse par défaut est autour de 200 cm/s";
 Blockly.Msg.SPHERO_TURN_TITLE = 'tourner Sphero';
 Blockly.Msg.SPHERO_TURN_TITLE_2 = "degrés pour";

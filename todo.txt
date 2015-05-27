@@ -3,16 +3,21 @@ https://developers.google.com/blockly/installation/js-interpreter
 
 TEST:
 	0. Highlight loop wrappers & function wrappers & conditionals?
-	2. Support of more than one Sphero to illustrate the collaboration between robots 
+	2. Support of more than one Sphero to illustrate the collaboration between robots
+		a. test adding a sphero, then removing it, and adding it again (does the number line up???)
+		b. change button accessibility based on which sphero is selected
+		c. disable address input field when sphero is connected
+		d. disable changing sphero when a message box is up (all fields not on box should disable)
 	
 HTML
 	0. collision sensitivity slider
 	4. potentially add google chrome extension server && offline web client app (integrated with server?)
 	0. Make New Project, Share Project
 	1. Revise the Manual
-	3. add an "offline version" that demonstrates the sphero action when not connected to a sphero
 	
 SERVER
+	-1. The client nor the server are notified when Sphero turns off due to inactivity.
+
 	0. Server disconnects from Sphero when searching for bluetooth devices on machine?? (test this by searching for bluetooth device adn connecting to phone)
 	1. server needs to disconnect from sphero when disconnected from web client`
 		(consistently, sometimes does sometimes doesn't)
@@ -30,19 +35,7 @@ SERVER
 		at org.java_websocket.server.WebSocketServer.run(WebSocketServer.java:286)
 		at java.lang.Thread.run(Unknown Source)
 		
-	----------------------------
-		
-	Stop Rolling
-	java.io.IOException: Stream closed
-		at com.intel.bluetooth.BluetoothRFCommInputStream.read(BluetoothRFCommInputStream.java:131)
-		at bluecoveRFCOMM.read(bluecoveRFCOMM.java:138)
-		at Sphero$1.readComm(Sphero.java:254)
-		at Sphero$1.listen(Sphero.java:262)
-		at Sphero$1.run(Sphero.java:321)
-		at java.lang.Thread.run(Unknown Source)
-	
-	------------------
-	
+	----------------------------	
 	java.io.IOException: Failed to write; [10053] An established connection was aborted by the software in your host machine.
 		at com.intel.bluetooth.BluetoothStackMicrosoft.send(Native Method)
 		at com.intel.bluetooth.BluetoothStackMicrosoft.connectionRfWrite(BluetoothStackMicrosoft.java:829)

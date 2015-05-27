@@ -15,17 +15,27 @@ SpheroManager.run = function() {
 
 	SpheroManager.sphero.clearEventHandlers();
 	SpheroManager.evalCode();
-	SpheroManager.sphero.clearAllCommands();
-	SpheroManager.sphero.begin_execute();
+	for (var i = 0; i < SpheroManager.sphero_array.length; i++){
+		var sphero = SpheroManager.sphero_array[i];		
+		sphero.clearAllCommands();
+		sphero.begin_execute();
+	}
 };
 	
 SpheroManager.evalCode = function(){
+	var init_sphero_vars = "";
+	for (var i = 0; i < SpheroManager.sphero_array.length; i++){
+		Blockly.JavaScript.addReservedWords('Sphero' + i);
+		init_sphero_vars += "var sphero"+i+" = SpheroManager.sphero_array[" + i + "];\n";
+	}
+	
 	Blockly.mainWorkspace.traceOn(true);
 	//Add this to prevent infinite loop crashing :D!!!
 	window.loopTrap = 1000;
 	Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.loopTrap <= 0) throw "Infinity";\n';
 	
-	var jscode = Blockly.JavaScript.workspaceToCode();
+	var jscode = init_sphero_vars + 
+				 Blockly.JavaScript.workspaceToCode();
 	console.log(jscode);
 	try {
 		eval(jscode);

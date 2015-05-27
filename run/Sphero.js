@@ -44,8 +44,9 @@ function SpheroConnection(url) {
 	this.isConnected = false;
 }
 
-function Sphero(url) {
+function Sphero(id) {
 	self = this;
+	this.id = id;
 	this.speed = 255;
 	this.power_timeout_id = null;
 	this.got_power_notification = false;
@@ -105,16 +106,16 @@ function Sphero(url) {
 	
 	this.isConnected = false;
 	this.testConnection = function() {
-		var command = {"command": "test"};
+		var command = {"command": "test", "id": self.id};
 		window.connection.send(command);
 	}
 	this.listSpheros = function(callback) {
-		var command = {"command": "listDevices"};
+		var command = {"command": "listDevices", "id": self.id};
 		window.connection.send(command);
 		window.connection.setMessageCallbackOnce(callback);
 	}
 	this.cancelListSpheros = function(){
-		var command = {"command": "cancelListDevices"};
+		var command = {"command": "cancelListDevices", "id": self.id};
 		window.connection.send(command);
 		window.connection.setMessageCallback(function(data){
 			data = JSON.parse(data);
@@ -122,7 +123,7 @@ function Sphero(url) {
 		});
 	}
 	this.connect = function(address, name, callback) {
-		var command = {"command": "connectToDevice", "address": address, "name": name};
+		var command = {"command": "connectToDevice", "address": address, "name": name, "id": self.id};
 		window.connection.send(command);
 		window.connection.setMessageCallback(function(data){
 			data = JSON.parse(data);
@@ -131,12 +132,12 @@ function Sphero(url) {
 			callback(self.isConnected);
 			window.connection.setMessageCallback(self.spheroMessageCallback.bind(self));
 			
-			this.got_power_notification = true;
-			this.power_timeout_id = window.setTimeout(this.powerNotificationHandler.bind(this), this.power_timeout);
+			self.got_power_notification = true;
+			self.power_timeout_id = window.setTimeout(self.powerNotificationHandler.bind(self), self.power_timeout);
 		});
 	}
 	this.cancelConnection = function(){
-		var command = {"command": "cancelConnection"};
+		var command = {"command": "cancelConnection", "id": self.id};
 		window.connection.send(command);
 		window.connection.setMessageCallback(function(data){
 			data = JSON.parse(data);
@@ -155,7 +156,7 @@ function Sphero(url) {
 		
 		this.clearAllCommands();
 	
-		var command = {"command": "disconnect" };
+		var command = {"command": "disconnect", "id": self.id};
 		self.isConnected = false;
 		window.connection.send(command);
 		window.connection.destroyMessageCallback();
@@ -165,19 +166,19 @@ function Sphero(url) {
 		
 		this.clearAllCommands();
 		
-		var command = {"command": "sleep"};
+		var command = {"command": "sleep", "id": self.id};
 		self.isConnected = false;
 		window.connection.send(command);
 		window.connection.destroyMessageCallback();
 	}
 	
 	this.beginCalibrationMode = function(){
-		var command = {"command": "calibrateOn"};
+		var command = {"command": "calibrateOn", "id": self.id};
 		window.connection.send(command);
 	}
 	
 	this.endCalibrationMode = function(){
-		var command = {"command": "calibrateOff"};
+		var command = {"command": "calibrateOff", "id": self.id};
 		window.connection.send(command);
 	}
 	
@@ -307,14 +308,14 @@ function Sphero(url) {
 		}
 	}
 	this.setCollisionDetection = function(value, handler){
-		var command = {"command": "setCollisionDetection", "value": value};
+		var command = {"command": "setCollisionDetection", "value": value, "id": self.id};
 		this.collisionHandler = handler;
 
 		//window.connection.destroyMessageCallback();
 		window.connection.send(command);
 	}
 	this.disableCollisionDetection = function(){
-		var command = {"command": "setCollisionDetection", "value": false};
+		var command = {"command": "setCollisionDetection", "value": false, "id": self.id};
 		this.collisionHandler = null;
 		
 		//this.updateConnectionMessageCallback(null);
@@ -327,7 +328,7 @@ function Sphero(url) {
 		clearTimeout(this.timeout_id);
 		this.timeout_id = null;
 		
-		var command = {"command": "stop"};
+		var command = {"command": "stop", "id": self.id};
 		window.connection.send(command);
 		if (this.stopHandler !== null)
 			this.HandleHandler(this.stopHandler);
@@ -339,9 +340,9 @@ function Sphero(url) {
 		clearTimeout(this.timeout_id);
 		this.timeout_id = null;
 		
-		var command = {"command": "stop"};
+		var command = {"command": "stop", "id": self.id};
 		window.connection.send(command);
-		var command = {"command": "clear"};
+		var command = {"command": "clear", "id": self.id};
 		window.connection.send(command);
 	}
 	this.begin_execute = function(execute_run_handler){
@@ -376,12 +377,12 @@ function Sphero(url) {
 					var colour = Utils.hexToRgb(hex);
 					this.current_colour = colour;
 					var command = {"command": "setRGB", 
-						"red": colour.r, "green": colour.g, "blue": colour.b};
+						"red": colour.r, "green": colour.g, "blue": colour.b, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "turn":
 					var direction = command[1];
-					var command = {"command": "turn", "direction": direction};
+					var command = {"command": "turn", "direction": direction, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "turnTimed":
@@ -391,7 +392,7 @@ function Sphero(url) {
 					wait_time_half = Math.round(this.wait_time / 2);
 					this.wait_time = wait_time_half;
 					this.timeout_id = setTimeout(function(dir, wait){
-						var command = {"command": "turn", "direction": dir};
+						var command = {"command": "turn", "direction": dir, "id": self.id};
 						window.connection.send(command);
 						this.wait_time = wait;
 						this.timeout_id = setTimeout(function(){
@@ -402,7 +403,7 @@ function Sphero(url) {
 					return; 
 				case "setStabilization":
 					var flag = command[1];
-					var command = {"command": "setStabilization", "flag":flag};
+					var command = {"command": "setStabilization", "flag":flag, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "setSpeed":
@@ -413,50 +414,50 @@ function Sphero(url) {
 					break;
 				case "roll":
 					var heading = command[1];
-					var command = {"command": "roll", "heading": heading, "speed": this.speed};
+					var command = {"command": "roll", "heading": heading, "speed": this.speed, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "rollTimed":
 					var heading = command[1];
 					var time = command[2]; //in seconds
-					var command = {"command": "roll", "heading": heading, "speed": this.speed};
+					var command = {"command": "roll", "heading": heading, "speed": this.speed, "id": self.id};
 					window.connection.send(command);
 					this.timeout_id = setTimeout(function(){
-						var command = {"command": "stop"};
+						var command = {"command": "stop", "id": self.id};
 						window.connection.send(command);
 						this.execute();
 					}.bind(this), this.wait_time);
 					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
 					return; 
 				case "rollForward":									
-					var command = {"command": "rollForward", "speed": this.speed};
+					var command = {"command": "rollForward", "speed": this.speed, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "rollForwardTimed":
 					var time = command[1]; //in seconds
 					this.wait_time = time * 1000;
-					var command = {"command": "rollForward", "speed": this.speed};
+					var command = {"command": "rollForward", "speed": this.speed, "id": self.id};
 					window.connection.send(command);
 					this.timeout_id = setTimeout(function(){
-						var command = {"command": "stop"};
+						var command = {"command": "stop", "id": self.id};
 						window.connection.send(command);
 						this.execute();
 					}.bind(this), this.wait_time);
 					//RETURN HERE TO MAKE THE EXECUTE FUNCTION NOT AUTOMATICALLY EXECUTE THE NEXT COMMAND
 					return; 
 				case "stop":								
-					var command = {"command": "stop"};
+					var command = {"command": "stop", "id": self.id};
 					window.connection.send(command);
 					break;
 				case "setHeading":
 					var heading = command[1];
-					var command = {"command": "setHeading", "heading": heading};
+					var command = {"command": "setHeading", "heading": heading, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "setBackLED":
 					var value = command[1];
 					this.back_led_intensity = value;
-					var command = {"command": "setBackLED", "value": value};
+					var command = {"command": "setBackLED", "value": value, "id": self.id};
 					window.connection.send(command);
 					break;
 				case "wait":

@@ -43,6 +43,11 @@
 				Stop
 			</button>
 			<br/>
+			<b>Manage Sphero #</b>
+			<select id="spheroNumber">
+				<option value="1">1</option>
+				<option value="" id="addAnotherSphero">++</option>
+			</select>
 			<button onclick="tryTo(SpheroManager.selectSphero)" id="selectButton">Select Address</button>
 			<input type="text" id="spheroAddress" value="00:06:66:4B:9F:D7">
 			<button type="button" onclick="tryTo(SpheroManager.connect);" id="connectButton">Connect</button>
@@ -79,8 +84,18 @@
 <xml id="toolbox" style="display: none">
 	<category name="Sphero Events">
 		<block type="sphero_run">
+			<value name="SPHERO">
+				<block type="math_number">
+					<field name="NUM">1</field>
+				</block>
+			</value>
 		</block>
 		<block type="sphero_event">
+			<value name="SPHERO">
+				<block type="math_number">
+					<field name="NUM">1</field>
+				</block>
+			</value>
 		</block>
 	</category>
 	<category name="Sphero Commands">
@@ -113,7 +128,7 @@
 			  </block>
 			</value>
 		</block>
-		<block type="sphero_turnTimed">
+		<!--<block type="sphero_turnTimed">
 			<value name="DIRECTION">
 			  <block type="math_number">
 				<field name="NUM">180</field>
@@ -124,7 +139,7 @@
 				<field name="NUM">1</field>
 			  </block>
 			</value>
-		</block>
+		</block>-->
 		<block type="sphero_stop"></block>
 		<block type="sphero_set_back_led">
 			<value name="BRIGHTNESS">
@@ -136,7 +151,7 @@
 		<block type="sphero_calibrate">
 			<value name="TIME">
 				<block type="math_number">
-					<field name="NUM">10</field>
+					<field name="NUM">5</field>
 				</block>
 			</value>
 		</block>
